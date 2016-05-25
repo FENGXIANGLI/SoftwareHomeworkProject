@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+       <!--指明 controller 所在包，并扫描其中的注解-->
+       <context:component-scan base-package="com.gaussic.controller"/>
+
+       <!-- 静态资源(js、image等)的访问 -->
+       <mvc:default-servlet-handler/>
+
+       <mvc:resources mapping="/javascript/**"
+       location="/WEB-INF/pages/assets/js"/>
+       <mvc:resources mapping="/styles/**"
+       location="/WEB-INF/pages/assets/css"/>
+       <mvc:resources mapping="/images/**"
+       location="/WEB-INF/pages/assets/img/"/>
+
+       <mvc:resources mapping="/portraitImg/**" location="/WEB-INF/images"/>
+
+       <mvc:resources mapping="/dateTimePickerJs/**" location="/WEB-INF/pages/assets/js/dateTimePicker"/>
+       <mvc:default-servlet-handler />
+
+       <!-- 开启注解 -->
+       <mvc:annotation-driven/>
+
+       <!-- 拦截器 -->
+       <mvc:interceptors>
+              <mvc:interceptor>
+                     <!-- 拦截全部地址 -->
+                     <mvc:mapping path="/**"/>
+                     <!-- 登录拦截类 -->
+                     <bean id="loginInterceptor" class="com.gaussic.Interceptor.LoginInterceptor">
+                     </bean>
+              </mvc:interceptor>
+       </mvc:interceptors>
+       <!-- 异常 -->
+       <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+              <property name="exceptionMappings">
+                     <props>
+                            <!--<登录失败异常类>-->
+                            <prop key="com.gaussic.Interceptor.UnLoginException">redirect:/login</prop>
+                     </props>
+              </property>
+       </bean>
+
+       <bean id="adminexceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+              <property name="exceptionMappings">
+                     <props>
+                            <!--<登录失败异常类>-->
+                            <prop key="com.gaussic.Interceptor.UnAdminLoginException">redirect:/serverLogin</prop>
+                     </props>
+              </property>
+       </bean>
+
+
+
+
+
+
+       <!--ViewResolver 视图解析器-->
+       <!--用于支持Servlet、JSP视图解析-->
+       <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+              <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+              <property name="prefix" value="/WEB-INF/pages/"/>
+              <property name="suffix" value=".jsp"/>
+       </bean>
+
+       <!-- 表示JPA Repository所在的包 -->
+       <jpa:repositories base-package="com.gaussic.repository"/>
+
+       <!-- 链接到persistence.xml -->
+       <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+              <property name="persistenceUnitName" value="defaultPersistenceUnit"/>
+       </bean>
+
+       <!-- 事务管理 -->
+       <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+              <property name="entityManagerFactory" ref="entityManagerFactory"/>
+       </bean>
+
+       <!-- 开启事务管理注解 -->
+       <tx:annotation-driven transaction-manager="transactionManager"/>
+
+       <!-- 多部分文件上传 -->
+       <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+              <property name="maxUploadSize" value="104857600" />
+              <property name="maxInMemorySize" value="4096" />
+              <property name="defaultEncoding" value="UTF-8"></property>
+       </bean>
+</beans>

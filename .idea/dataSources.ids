@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - springdemo@localhost" uuid="5802afae-d5b3-45ce-80da-f6ec9cb49a0b">
+    <database-info product="MySQL" version="5.7.11" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
+    <schema name="" catalog="springdemo"/>
+    <table name="administrator" schema="" catalog="springdemo" type="TABLE">
+      <column name="idadminstrator" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="account" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="type" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="idadminstrator"/>
+    </table>
+    <table name="bookInfo" schema="" catalog="springdemo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="bookName" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ISBN" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="author" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="press" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="summary" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="location" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="price" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="atLibOrNot" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="idBorrowed" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="bookNumber" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="transaction" schema="" catalog="springdemo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="userId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="bookId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="borrowTime" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="shouldReturnTime" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="borrowTimes" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="returnOrNot" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="returnTime" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="bookName" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="borrowName" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="location" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="bookId_idx" unique="false" columns="bookId"/>
+      <index name="userId_idx" unique="false" columns="userId"/>
+    </table>
+    <table name="user" schema="" catalog="springdemo" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="nickname" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="first_name" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="last_name" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="account" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="userGender" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="department" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="studentId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="debt" sqlType="FLOAT" precision="12" scale="0" nullable="true" jdbcType="7"/>
+      <column name="allowAmountBookNum" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="borrowBookNum" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="birthday" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="defaultTimes" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="defaultTotalDay" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+  </data-source>
+</component>
