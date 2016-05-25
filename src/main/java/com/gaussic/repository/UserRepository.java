@@ -20,4 +20,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     public void updateUser(@Param("qNickname") String nickname, @Param("qFirstName") String firstName,
                            @Param("qLastName") String qLastName, @Param("qPassword") String password, @Param("qId") Integer id);
 
+    @Transactional
+    @Query("from UserEntity us where us.account =:qAccount")
+    public UserEntity findByAccountName(@Param("qAccount") String account);
+
 }

@@ -1,9 +1,12 @@
 package com.gaussic.controller;
 
         import com.gaussic.model.BookInfoEntity;
+        import com.gaussic.model.TransactionEntity;
         import com.gaussic.model.UserEntity;
         import com.gaussic.repository.BookInfoEntityRepository;
+        import com.gaussic.repository.TransactionEntityRepository;
         import com.gaussic.repository.UserRepository;
+        import com.sun.org.apache.xpath.internal.operations.Mod;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Controller;
         import org.springframework.ui.ModelMap;
@@ -25,6 +28,8 @@ package com.gaussic.controller;
         import org.springframework.web.multipart.commons.CommonsMultipartResolver;
         import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+        import Consts.*;
+
 /**
  * Created by fengxiangli on 16/5/8.
  */
@@ -35,9 +40,13 @@ class UserController {
     @Autowired
     BookInfoEntityRepository bookInfoEntityRepository;
 
+    @Autowired
+    TransactionEntityRepository transactionEntityRepository;
     Set<Integer> user_IdSet = new HashSet<Integer>();
 
     private Map<Long, UserEntity> userMap = new ConcurrentHashMap<Long, UserEntity>();
+
+    private String userAccount;
 
     @RequestMapping(value = "/user/register", method = RequestMethod.GET)
     public String registerPage(HttpServletRequest request){
@@ -99,6 +108,17 @@ class UserController {
        return "/user/register";
     }
 
+    @RequestMapping(value = "/user/personalInfo", method = RequestMethod.GET)
+    public String getPersonalInfo(ModelMap modelMap, HttpServletRequest request){
+        if (request.getSession().getAttribute("userName") == null){
+            return "redirect:/login";
+        }
+
+        UserEntity userEntity = userRepository.findByAccountName(this.userAccount);
+        modelMap.addAttribute("consumer",userEntity);
+        return "/user/personalInfo";
+    }
+
     @RequestMapping(value = "/user/registerSucceed", method = RequestMethod.GET)
     public  String registerSuccessful(){
         return "user/registerSucceed";
@@ -115,9 +135,11 @@ class UserController {
              userList) {
             userPassUserMap.put(user.getAccount(),new String[]{user.getPassword(),String.valueOf(user.getId())});
         }
+
         String inputAccount = request.getParameter("username");
         String inputPassword = request.getParameter("password");
         System.out.println("test" + inputAccount);
+
         if (!userPassUserMap.containsKey(inputAccount)){
             modelMap.addAttribute("error","用户名不存在");
             System.out.println("用户名不存在");
@@ -129,6 +151,7 @@ class UserController {
             System.out.println("密码错误");
             return "/index";
         }
+
         HttpSession session = request.getSession();
         session.setAttribute("alreadyLogin","YES");
 
@@ -157,29 +180,71 @@ class UserController {
         List<BookInfoEntity> bookInfoEntityList = bookInfoEntityRepository.findAll();
         modelMap.addAttribute("bookNumber",bookInfoEntityList.size());
 
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllByAccount(this.userAccount);
+        modelMap.addAttribute("transactionList",transactionEntityList);
+
+        modelMap.addAttribute("pageType",0);
+
+        this.userAccount = userAccount;
+
+        return "/user/userProfile";
+    }
+
+    @RequestMapping(value = "/user/showAllTransaction",method = RequestMethod.GET)
+    public String showAllTransaction(ModelMap modelMap){
+        modelMap.addAttribute("pageType",0);
+
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllByAccount(this.userAccount);
+        modelMap.addAttribute("transactionList", transactionEntityList);
+        return "/user/userProfile";
+    }
+
+    @RequestMapping(value = "/user/showShouldReturnTransaction",method = RequestMethod.GET)
+    public String showReturnTransaction(ModelMap modelMap){
+        modelMap.addAttribute("pageType",1);
+
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(this.userAccount, TransactionTypeConsts.unReturned);
+        modelMap.addAttribute("transactionList", transactionEntityList);
+        return "/user/userProfile";
+    }
+
+    @RequestMapping(value = "/user/showFinishedTransaction",method = RequestMethod.GET)
+    public String showFinishedTransaction(ModelMap modelMap){
+        modelMap.addAttribute("pageType",2);
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(this.userAccount, TransactionTypeConsts.Finished);
+        modelMap.addAttribute("transactionList", transactionEntityList);
         return "/user/userProfile";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginByGet(HttpServletRequest request){
+    public String loginByGet(HttpServletRequest request, ModelMap modelMap){
         if (request.getSession().getAttribute("alreadyLogin") != null){
+            List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAll();
+            modelMap.addAttribute("transactionList",transactionEntityList);
             return "/user/userProfile";
         }
         return "/index";
     }
 
-//    @RequestMapping(value = "/user/userProfile/{id}", method = RequestMethod.POST)
-//    public String userPlatform(@PathVariable("id") Integer userId, ModelMap modelmap){
-//        UserEntity userEntity = userRepository.findOne(userId);
-//        modelmap.addAttribute("user",userEntity);
-//        modelmap.addAttribute("userId",userId);
-//        return "/user/userProfile";
-//    }
-
     @RequestMapping(value = "/logout",method = RequestMethod.GET)
     public String logout(HttpServletRequest request){
         request.getSession().invalidate();
         return "redirect:/login";
+    }
+
+
+
+    @RequestMapping(value = "/user/userProfile",method = RequestMethod.GET)
+    public String userFileRedirect(ModelMap modelMap, HttpServletRequest request){
+        if (request.getSession().getAttribute("userName") == null){
+            return "redirect:/login";
+        }
+
+        if(request.getSession().getAttribute("imgAddress")!= null){
+            modelMap.addAttribute("imgAddress",request.getSession().getAttribute("imgAddress"));
+        }
+        modelMap.addAttribute("pageType",0);
+        return "/user/userProfile";
     }
 
     @RequestMapping(value = "/SpringMVC006/springUpload")
@@ -220,15 +285,4 @@ class UserController {
         return "redirect:/user/userProfile";
     }
 
-    @RequestMapping(value = "/user/userProfile",method = RequestMethod.GET)
-    public String userFileRedirect(ModelMap modelMap, HttpServletRequest request){
-        if (request.getSession().getAttribute("userName") == null){
-            return "redirect:/login";
-        }
-
-        if(request.getSession().getAttribute("imgAddress")!= null){
-            modelMap.addAttribute("imgAddress",request.getSession().getAttribute("imgAddress"));
-        }
-        return "/user/userProfile";
-    }
 }

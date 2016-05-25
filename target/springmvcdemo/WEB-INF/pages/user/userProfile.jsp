@@ -114,7 +114,6 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a href="/" class="navbar-brand weipiao-title">
                         </a>
                     </div>
                 </div>
@@ -210,7 +209,9 @@
         </div>
     </div>
 </div>
+
 <a id="profile-top" style="position:absolute;top:522px;"></a>
+
 <div class="my_center" id="user_center_box">
     <div class="container">
         <div class="row">
@@ -218,33 +219,47 @@
                 <nav class="my_center_sidenav">
                     <ul class="nav text-right">
                         <li class="active"><a href="http://wepiao.com/index.php?r=user/order#profile-top">借书订单</a></li>
-                        <li><a href="http://wepiao.com/index.php?r=user/profile#profile-top">个人信息</a></li>
+                        <li><a href="/user/personalInfo">个人信息</a></li>
                     </ul>
                 </nav>
             </div>
+
+
             <div class="col-md-10" id="ucenterbox">
 
                 <div class="ucentertab row">
                     <ul>
-                        <li class="on"><a href="http://wepiao.com/index.php?r=user/order#profile-top">全部</a> </li>
-                        <li class=""><a href="http://wepiao.com/index.php?r=user/order/status/1#profile-top">待还借书单</a></li>
-                        <li class=""><a href="http://wepiao.com/index.php?r=user/order/status/2#profile-top">完成借书单</a></li>
+                        <c:choose>
+                            <c:when test="${pageType == 1}">
+                                <li class=""><a href="/user/showAllTransaction">全部</a> </li>
+                                <li class="on"><a href="/user/showShouldReturnTransaction">待还借书单</a></li>
+                                <li class=""><a href="/user/showFinishedTransaction">完成借书单</a></li>
+                            </c:when>
+                            <c:when test="${pageType == 2}">
+                                <li class=""><a href="/user/showAllTransaction">全部</a> </li>
+                                <li class=""><a href="/user/showShouldReturnTransaction">待还借书单</a></li>
+                                <li class="on"><a href="/user/showFinishedTransaction">完成借书单</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li class="on"><a href="/user/showAllTransaction">全部</a> </li>
+                                <li class=""><a href="/user/showShouldReturnTransaction">待还借书单</a></li>
+                                <li class=""><a href="/user/showFinishedTransaction">完成借书单</a></li>
+                            </c:otherwise>
+                        </c:choose>
                     </ul>
                 </div>
 
                 <c:if test="${empty transactionList}">
                     <h2>暂无借书单</h2>
                 </c:if>
-
-
-                <c:if test="${empty transactionList}">
-
-                    <c:forEach items="transactionList" var="transaction">
+                <div></div>
+                <c:if test="${!empty transactionList}">
+                    <c:forEach items="${transactionList}" var="transaction">
                         <div class="infobox order_list" data="861">
                             <div class="row info_header">
                                 <div class="col-md-3">
                                     <p>
-                                        订单编号：
+                                        借书单编号：
                                         <span>${transaction.id}</span>
                                     </p>
                                 </div>
@@ -262,9 +277,15 @@
                                 <div class="col-md-2 uploadCard"></div>
                                 <div class="col-md-2 stu">
                                     <p>
-                                        状态：
-                                        <c:if test="${transaction.returnOrNot == 0} "><span>未归还</span></c:if>
-                                        <c:if test="${transaction.returnOrNot == 1} "><span>归还</span></c:if>
+                                        状态:
+                                        <c:choose>
+                                            <c:when test="${transaction.returnOrNot == 1}">
+                                                <span>已归还</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span>未归还</span>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </p>
                                 </div>
                             </div>
@@ -279,13 +300,13 @@
                                             <p class="t t"></p>
                                             <div class="t s clearfix">
                                                 <p class="l">
-                                                    <span>1</span>
-                                                    张
+                                                    续借次数:
+                                                    <span>${transaction.borrowTimes}</span>
+                                                    次
                                                 </p>
                                                 <p class="r">
                                                     <label>待还最晚日期：</label>
                                                     <span>${transaction.shouldReturnTime}</span>
-
                                                 </p>
                                             </div>
                                             <ul class="arealist clearfix"></ul>
@@ -302,97 +323,25 @@
                                             <label>借书人姓名:</label>
                                             ${transaction.borrowName}
                                         </li>
-
                                     </ul>
                                     <div class="op">
                                             <%--<a class="opbtn cancel" href="http://wepiao.com/index.php?r=user/cancelOrder/id/14641472614415#profile-top" onclick="prop_comfirm(arguments[0]);" >取消订单</a>--%>
                                         <a class="opbtn pay" href="http://wepiao.com/index.php?r=payment/index/orderId/14641472614415#profile-top">
-                                            还书
+                                            续借
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </c:forEach>
-
-                    <div class="infobox order_list" data="861">
-                        <div class="row info_header">
-                            <div class="col-md-3">
-                                <p>
-                                    订单编号：
-                                    <span>14641472614415</span>
-                                </p>
-                            </div>
-                            <div class="col-md-3">
-                                <p>
-                                    时间：
-                                    <span>2016-05-25 11:34:22</span>
-                                </p>
-                            </div>
-                            <div class="col-md-2">
-                                <p>
-
-                                    <span></span>
-                                </p>
-                            </div>
-                            <div class="col-md-2 uploadCard"></div>
-                            <div class="col-md-2 stu">
-                                <p>
-                                    状态：
-                                    <span>未归还</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row order_info">
-                            <div class="col-md-8 o_i_des">
-                                <dl>
-                                    <dt>
-                                        <img src="/portraitImg/images/${imgBookAddress}"></dt>
-                                    <dd>
-                                        <p class="t n">[北京]BJCC北京漫控潮流博览会</p>
-                                        <p class="t p">在馆地址：中国国际展览中心(新馆)E1馆</p>
-                                        <p class="t t">06月09日 周四</p>
-                                        <div class="t s clearfix">
-                                            <p class="l">
-                                                <span>1</span>
-                                                张
-                                            </p>
-                                            <p class="r">
-                                                <label>待还最晚日期：</label>
-                                                <span>180</span>
-                                                元
-                                            </p>
-                                        </div>
-                                        <ul class="arealist clearfix"></ul>
-                                    </dd>
-                                </dl>
-                            </div>
-                            <div class="col-md-4 o_i_piao">
-                                <ul>
-                                    <li>
-                                        <label>借书人学号:</label>
-                                        18811465446
-                                    </li>
-                                    <li>
-                                        <label>借书人姓名:</label>
-                                        展览当日7:00-16:00北京中国国际展览中心 (新馆)南入口兑票处换取实体票
-                                    </li>
-
-                                </ul>
-                                <div class="op">
-                                    <%--<a class="opbtn cancel" href="http://wepiao.com/index.php?r=user/cancelOrder/id/14641472614415#profile-top" onclick="prop_comfirm(arguments[0]);" >取消订单</a>--%>
-                                    <a class="opbtn pay" href="http://wepiao.com/index.php?r=payment/index/orderId/14641472614415#profile-top">
-                                        还书
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </c:if>
-            </div>
         </div>
     </div>
 </div>
+
+
+
 <div class="footer">
     <div class="footerCon">
         <div class="logo footerItem">
