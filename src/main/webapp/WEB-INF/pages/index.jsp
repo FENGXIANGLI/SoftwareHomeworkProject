@@ -30,7 +30,7 @@
         <br/>
         <h2><font color="red">${userName}</font></h2>
     </c:if>
-    <form:form action="/login" method="post" commandName="registerUser" role = "form">
+    <form:form action="/login" method="post" role = "form">
     <div class="form-group">
         <input type="text" name="username" class="form-control" placeholder="用户名" >
     </div>

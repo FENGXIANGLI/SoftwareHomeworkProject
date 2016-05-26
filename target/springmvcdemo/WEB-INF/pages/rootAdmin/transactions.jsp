@@ -29,7 +29,7 @@
 </head>
 <body>
 <div class="container">
-  <h1>北京大学图书管理系统-管理员管理</h1>
+  <h1>北京大学图书管理系统-超级管理员</h1>
   <hr/>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -72,7 +72,7 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
-
+  <h3>所有借书单</h3>
   <!-- 如果用户列表为空 -->
   <c:if test="${empty transactionList}">
     <div class="alert alert-warning" role="alert">
@@ -106,7 +106,12 @@
           <td>${transaction.shouldReturnTime}</td>
           <td>${transaction.borrowTimes}</td>
           <td>${transaction.returnOrNot}</td>
-          <td>${transaction.returnTime}</td>
+          <c:if test="${transaction.returnOrNot == 1}">
+            <td>${transaction.returnTime}</td>
+          </c:if>
+          <c:if test="${transaction.returnOrNot == 0}">
+            <td>未归还</td>
+          </c:if>
           <td>
             <a href="/admin/transactions/delete/${transaction.id}" type="button" class="btn btn-sm btn-danger">删除</a>
           </td>

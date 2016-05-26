@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="http://static.show.wepiao.com/pc/css/uploadfile.css?v=94dc0e9" >
     <link rel="stylesheet" href="http://static.show.wepiao.com/pc/css/style.css?v=94dc0e9">
     <link rel="stylesheet" href="http://static.show.wepiao.com/pc/css/media.css?v=94dc0e9">
+    
+
     <script src="http://static.show.wepiao.com/pc/js/libs/jquery.min.js?v=94dc0e9"></script>
     <script src="http://static.show.wepiao.com/pc/js/libs/bootstrap.min1.js?v=94dc0e9"></script>
     <script src="http://static.show.wepiao.com/pc/js/libs/uploadify/jquery.uploadify.js?v=94dc0e9"></script>
@@ -125,7 +127,12 @@
                     </div>
                     <div class="regionChooseWindow">
                         <div class="regionTop hotCity">
-                            <p>当前<a href="/index.php?r=item/search">现在馆</a>共有<span class="count"></span>${bookNumber}本</p>
+
+                            <%
+                                Object bookNumbers=session.getAttribute("bookNumbers");
+                            %>
+
+                            <p>当前<a href="/index.php?r=item/search">现在馆</a>共有<span class="count"></span><%=bookNumbers%>本</p>
                             <div class="closeWin"></div>
                             <div class="arrow"></div>
                         </div>
@@ -146,8 +153,8 @@
                                     <span class="user_point"></span>
                             </div>
                             <div class="userMsglist">
-                                <a href="/index.php?r=user/order" class="first">借书单</a>
-                                <a href="/index.php?r=user/profile#profile-top">个人设置</a>
+                                <a href="/user/userProfile" class="first">借书单</a>
+                                <a href="/user/personalInfo">个人设置</a>
                                 <a href="/logout">退出</a>
                             </div>
                         </div>
@@ -201,7 +208,7 @@
                         </h3>
                     </c:if>
                     <p>
-                        <a href="http://wepiao.com/index.php?r=user/profile#profile-top" class="btn btn-default btn-lg" role="button">修改个人资料</a>
+                        <a href="/user/personalInfo" class="btn btn-default btn-lg" role="button">修改个人资料</a>
                     </p>
                 </div>
                 <br>
@@ -218,7 +225,7 @@
             <div class="col-md-2">
                 <nav class="my_center_sidenav">
                     <ul class="nav text-right">
-                        <li class="active"><a href="http://wepiao.com/index.php?r=user/order#profile-top">借书订单</a></li>
+                        <li class="active"><a href="/user/userProfile">借书订单</a></li>
                         <li><a href="/user/personalInfo">个人信息</a></li>
                     </ul>
                 </nav>
@@ -252,7 +259,6 @@
                 <c:if test="${empty transactionList}">
                     <h2>暂无借书单</h2>
                 </c:if>
-                <div></div>
                 <c:if test="${!empty transactionList}">
                     <c:forEach items="${transactionList}" var="transaction">
                         <div class="infobox order_list" data="861">
@@ -336,6 +342,7 @@
 
                     </c:forEach>
                 </c:if>
+            </div>
         </div>
     </div>
 </div>
@@ -415,5 +422,9 @@
         eval($('#ADDGACODE').html());
     }
 </script>
+
+
+
+
 </body>
 </html>

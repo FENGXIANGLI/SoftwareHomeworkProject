@@ -16,6 +16,7 @@ package com.gaussic.controller;
 
         import javax.servlet.http.HttpServletRequest;
         import javax.servlet.http.HttpSession;
+        import javax.swing.text.html.parser.Parser;
         import javax.validation.Valid;
         import java.io.File;
         import java.io.IOException;
@@ -48,6 +49,8 @@ class UserController {
 
     private String userAccount;
 
+    private Integer userId;
+
     @RequestMapping(value = "/user/register", method = RequestMethod.GET)
     public String registerPage(HttpServletRequest request){
         request.getSession().removeAttribute("error");
@@ -63,6 +66,8 @@ class UserController {
             request.getSession().getAttribute("gender_1");
 
             SimpleDateFormat bartDateFormat = new SimpleDateFormat("MM dd yyyy");
+
+            System.out.println("birthday:Here:: " + birthday);
             java.util.Date date = bartDateFormat.parse(birthday);
             java.sql.Date sqlDate = new java.sql.Date(date.getTime());
             System.out.println(sqlDate.getTime());
@@ -71,17 +76,18 @@ class UserController {
             request.getSession().removeAttribute("error");
             request.getSession().removeAttribute("rightValue");
 
+            Boolean onlySqlError = true;
             if (result.hasErrors()){
                 System.out.println("error");
                 List<ObjectError> objectError= result.getAllErrors();
                 List<String> errorArray = new ArrayList<String>();
 
-                Boolean sqlError = false;
+
                 System.out.println(objectError.get(0).getDefaultMessage());
                 if (objectError.get(0).getDefaultMessage().contains("'java.lang.String' to required type 'java.sql.Date'")&& objectError.size() == 1){
-                    sqlError = true;
+                    onlySqlError = false;
                 }
-                if (sqlError){
+                if (onlySqlError){
                     request.getSession().setAttribute("error",objectError.get(0).getDefaultMessage());
                     return "/user/register";
                 }
@@ -178,13 +184,17 @@ class UserController {
         modelMap.addAttribute("userGender", loginEntity.getUserGender());
 
         List<BookInfoEntity> bookInfoEntityList = bookInfoEntityRepository.findAll();
-        modelMap.addAttribute("bookNumber",bookInfoEntityList.size());
+        session.setAttribute("bookNumbers",bookInfoEntityList.size());
 
         List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllByAccount(this.userAccount);
         modelMap.addAttribute("transactionList",transactionEntityList);
 
         modelMap.addAttribute("pageType",0);
 
+
+
+
+        this.userId = Integer.parseInt(userId);
         this.userAccount = userAccount;
 
         return "/user/userProfile";
@@ -283,6 +293,30 @@ class UserController {
         long  endTime=System.currentTimeMillis();
         System.out.println("方法三的运行时间："+String.valueOf(endTime-startTime)+"ms");
         return "redirect:/user/userProfile";
+    }
+
+    @RequestMapping(value = "/user/modifyPassword", method = RequestMethod.POST)
+    public String updateUser(ModelMap modelMap ,HttpServletRequest request){
+        String inputPassword = request.getParameter("modifyPassword");
+        String  inputConfirmPassword= request.getParameter("confirmModifyPassword");
+
+        UserEntity userEntity = userRepository.findOne(this.userId);
+
+        System.out.println("testUserModify:" + inputPassword + inputConfirmPassword);
+        if (inputPassword.equals("")||!inputPassword.equals(inputConfirmPassword)){
+            System.out.println("hereError");
+            modelMap.addAttribute("consumer",userEntity);
+            return "/user/personalInfo";
+        }else {
+            userEntity.setPassword(inputConfirmPassword);
+            userRepository.updateUser(userEntity.getBirthday(),userEntity.getAccount(),userEntity.getNickname(),userEntity.getLastName(),userEntity.getFirstName(),userEntity.getPassword(),userEntity.getStudentId(),userEntity.getDepartment(),userEntity.getBorrowBookNum(),userEntity.getAllowAmountBookNum(),userEntity.getDefaultTimes(),userEntity.getDefaultTotalDay(),userEntity.getUserGender(),userEntity.getId());
+            modelMap.addAttribute("succeedModify","succeed!");
+            modelMap.addAttribute("consumer",userEntity);
+            return "/user/personalInfo";
+        }
+//        System.out.println("testUser" + userEntity.getAccount());
+
+
     }
 
 }

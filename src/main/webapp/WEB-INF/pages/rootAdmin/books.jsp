@@ -50,7 +50,7 @@
           <li ><a href="/admin/adminUsers/managers">管理员管理</a></li>
           <li ><a href="/admin/adminUsers/users">用户管理</a></li>
           <li class="active"><a href="/admin/adminUsers/books">图书管理</a><span class="sr-only">(current)</span></li>
-          <li><a href="/admin/adminUsers/transaction">订单管理</a></li>
+          <li><a href="/admin/adminUsers/transactions">订单管理</a></li>
         </ul>
         <form:form action="/admin/book/search" class="navbar-form navbar-left" role="search">
           <div class="form-group">

@@ -2,6 +2,7 @@ package Utils;
 
 import java.util.Random;
 import java.util.Set;
+import java.sql.Date;
 
 /**
  * Created by fengxiangli on 16/4/19.
@@ -23,5 +24,24 @@ public class CommonUtils {
                 return num;
             }
         }
+    }
+
+    public static int getDateDiffer(Date c1, Date c2){
+        java.util.Calendar calst = java.util.Calendar.getInstance();
+        java.util.Calendar caled = java.util.Calendar.getInstance();
+        calst.setTime(c2);
+        caled.setTime(c1);
+        //设置时间为0时
+        calst.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        calst.set(java.util.Calendar.MINUTE, 0);
+        calst.set(java.util.Calendar.SECOND, 0);
+        caled.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        caled.set(java.util.Calendar.MINUTE, 0);
+        caled.set(java.util.Calendar.SECOND, 0);
+        //得到两个日期相差的天数
+        int days = ((int) (caled.getTime().getTime() / 1000) - (int) (calst
+                .getTime().getTime() / 1000)) / 3600 / 24;
+
+        return days;
     }
 }

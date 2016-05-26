@@ -93,7 +93,7 @@
                 <span class="add-on"><i class="icon-remove"></i></span>
                 <span class="add-on"><i class="icon-th"></i></span>
             </div>
-            <input type="hidden" id="dtp_input2" value="" /><br/>
+            <input type="hidden" id="dtp_input2" value=""/><br/>
         </div>
 
         <div class="form-group">

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 /**
- * Created by fengxiangli on 16/5/25.
+ * Created by fengxiangli on 16/5/26.
  */
 @Entity
 @Table(name = "user", schema = "", catalog = "springdemo")
@@ -56,7 +56,7 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "first_name", nullable = true, insertable = true, updatable = true, length = 45)
+    @Column(name = "firstName", nullable = true, insertable = true, updatable = true, length = 45)
     public String getFirstName() {
         return firstName;
     }
@@ -66,7 +66,7 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "last_name", nullable = true, insertable = true, updatable = true, length = 45)
+    @Column(name = "lastName", nullable = true, insertable = true, updatable = true, length = 45)
     public String getLastName() {
         return lastName;
     }

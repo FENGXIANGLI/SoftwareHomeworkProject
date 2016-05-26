@@ -10,6 +10,7 @@ package com.gaussic.controller;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Controller;
         import org.springframework.ui.ModelMap;
+        import org.springframework.validation.BindingResult;
         import org.springframework.web.bind.annotation.ModelAttribute;
         import org.springframework.web.bind.annotation.PathVariable;
         import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,8 @@ package com.gaussic.controller;
 
         import javax.servlet.http.HttpServletRequest;
         import javax.servlet.http.HttpSession;
+        import javax.validation.Valid;
+        import java.text.SimpleDateFormat;
         import java.util.*;
 
 
@@ -47,7 +50,8 @@ public class AdminController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(HttpServletRequest request,ModelMap modelMap) {
-        if (request.getSession().getAttribute("rootAdminLogin") != null){
+        if (request.getSession().getAttribute("userToken") != null){
+            System.out.println("userTokenProfile!!!");
             return "/user/userProfile";
         }
         return "index";
@@ -268,11 +272,23 @@ public class AdminController {
 
     // 更新用户信息 操作
     @RequestMapping(value = "/admin/users/updateP", method = RequestMethod.POST)
-    public String updateUserPost(@ModelAttribute("userP") UserEntity user){
-
+    public String updateUserPost(HttpServletRequest request,@Valid @ModelAttribute("userP") UserEntity userEntity,BindingResult result, String birthday){
+        try {
+        System.out.println("birthday:Here: " + birthday);
+        SimpleDateFormat bartDateFormat = new SimpleDateFormat("MM dd yyyy");
+        System.out.println("birthday:Here: " + birthday);
+            java.util.Date date = bartDateFormat.parse(birthday);
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            System.out.println(sqlDate.getTime());
+            userEntity.setBirthday(sqlDate);
+            System.out.println("Id:Id "  + userEntity.getId());
         // 更新用户信息
-        userRepository.updateUser(user.getNickname(),user .getFirstName(),user.getLastName(),user.getPassword(),user.getId());
+        }catch (Exception e){
+        System.out.println(e.getMessage());
+        }
+        userRepository.updateUser(userEntity.getBirthday(),userEntity.getAccount(),userEntity.getNickname(),userEntity.getLastName(),userEntity.getFirstName(),userEntity.getPassword(),userEntity.getStudentId(),userEntity.getDepartment(),userEntity.getBorrowBookNum(),userEntity.getAllowAmountBookNum(),userEntity.getDefaultTimes(),userEntity.getDefaultTotalDay(),userEntity.getUserGender(),userEntity.getId());
         userRepository.flush(); //刷新缓冲区
+
         return "redirect:/admin/users";
     }
 
