@@ -122,7 +122,7 @@
                 <!-- 城市筛选 start -->
                 <div class="region">
                     <div class="showRegion">
-                        <span class="region_city">在馆图书</span>
+                        <span class="region_city">在馆</span>
                         <span class="region_point"></span>
                     </div>
                     <div class="regionChooseWindow">
@@ -142,10 +142,14 @@
                 </div>
                 <!-- 城市筛选 end -->
                 <div class="" id="wepiao-navbar-collapse-1">
+                    <div class="menuCon clearfix">
+                        <div class='navdrop'>
+                            <a class="my-ticket menu_item" href="/user/bookPlatform/0"><span>图书馆主页</span></a>
+                        </div>
+                    </div>
                 </div>
                 <div class="">
                     <div class="" id="login-in">
-
 
                         <div id="user-state-container" class="logoOrSign">
                             <div style="" class="userPhoto">
@@ -156,7 +160,7 @@
                             </div>
                             <div class="userMsglist">
                                 <a href="/user/showAllTransaction" class="first">借书单</a>
-                                <a href="/user/personalInfo">个人设置</a>
+                                <a href="/user/personalInfoRedirect">个人设置</a>
                                 <a href="/logout">退出</a>
                             </div>
                         </div>
@@ -186,23 +190,23 @@
                 <form id="avatar_form" action="/SpringMVC006/springUpload" enctype="multipart/form-data" style="display:none;" method="POST" target="avatar_iframe">
                     <input id="avatar_input" name="picture" type="file" class="file" accept="image/*" />
                 </form>
-                <c:if test="${empty imgAddress}">
-                <img id = "avatar_img" width="100" height="100" src="http://static.show.wepiao.com/thumb/auto/80/107//pc/img/defaultpic.gif" class="circle">
-                </c:if>
-                <c:if test="${!empty imgAddress}">
-                    <img id = "avatar_img" width="100" height="100" src="/portraitImg/images/${imgAddress}" >
-                </c:if>
+                <%--<c:if test="${empty imgAddress}">--%>
+                <%--<img id = "avatar_img" width="100" height="100" src="http://static.show.wepiao.com/thumb/auto/80/107//pc/img/defaultpic.gif" class="circle">--%>
+                <%--</c:if>--%>
+                <%--<c:if test="${!empty imgAddress}">--%>
+                    <img id = "avatar_img" width="100" height="100" src="/portraitImg/images/userPortrait.jpg" >
+                <%--</c:if>--%>
                 <%--<form name="Form2" action="/SpringMVC006/springUpload" method="post"  enctype="multipart/form-data">--%>
                 <%--<input type="file" name="file">--%>
                     <%--<input type="submit" value="upload"/>--%>
                 <%--</form>--%>
                 <div class="caption text-center">
 
-                    <c:if test="${userGender == 0}">
-                    <h3 class="un">
-                        <span class=""><img src="http://static.show.wepiao.com/pc/img/man.png"></span>
-                        <%--http://static.show.wepiao.com/pc/img/women.png--%>
-                    </h3>
+                    <c:if test="${userGender == 0||userGender == null}">
+                        <h3 class="un">
+                            <span class=""><img src="http://static.show.wepiao.com/pc/img/man.png"></span>
+                                <%--http://static.show.wepiao.com/pc/img/women.png--%>
+                        </h3>
                     </c:if>
                     <c:if test="${userGender == 1}">
                         <h3 class="un">
@@ -211,7 +215,7 @@
                         </h3>
                     </c:if>
                     <p>
-                        <a href="/user/personalInfo" class="btn btn-default btn-lg" role="button">修改个人资料</a>
+                        <a href="/user/personalInfoRedirect" class="btn btn-default btn-lg" role="button">修改个人资料</a>
                     </p>
                 </div>
                 <br>
@@ -229,7 +233,7 @@
                 <nav class="my_center_sidenav">
                     <ul class="nav text-right">
                         <li class="active"><a href="/user/showAllTransaction">借书订单</a></li>
-                        <li><a href="/user/personalInfo">个人信息</a></li>
+                        <li><a href="/user/personalInfoRedirect">个人信息</a></li>
                     </ul>
                 </nav>
             </div>
@@ -302,7 +306,7 @@
                                 <div class="col-md-8 o_i_des">
                                     <dl>
                                         <dt>
-                                            <img src="/portraitImg/images/${transaction.bookName}_book.jpg"></dt>
+                                            <img width="100" src="/portraitImg/images/${transaction.bookId}_book.jpg"></dt>
                                         <dd>
                                             <p class="t n">${transaction.bookName}</p>
                                             <p class="t p">在馆地址：${transaction.location}</p>

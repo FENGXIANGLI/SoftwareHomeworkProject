@@ -60,6 +60,10 @@
 
     </script>
 
+    <script type="text/javascript">
+
+    </script>
+
     <!-- ie9及以下浏览器升级提示 -->
     <!--[if lte IE 9]>
         <style>
@@ -144,7 +148,7 @@
                 <!-- 城市筛选 start -->
                 <div class="region">
                     <div class="showRegion">
-                        <span class="region_city">在馆图书</span>
+                        <span class="region_city">在馆</span>
                         <span class="region_point"></span>
                     </div>
                     <div class="regionChooseWindow">
@@ -161,8 +165,16 @@
                     </div>
                 </div>
                 <!-- 城市筛选 end -->
+
+
                 <div class="" id="wepiao-navbar-collapse-1">
+                    <div class="menuCon clearfix">
+                        <div class='navdrop'>
+                            <a class="my-ticket menu_item" href="/user/bookPlatform/0"><span>图书馆主页</span></a>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="">
                     <div class="" id="login-in">
                         <div id="user-state-container" class="logoOrSign">
@@ -174,20 +186,17 @@
                             </div>
                             <div class="userMsglist">
                                 <a href="/user/showAllTransaction" class="first">借书单</a>
-                                <a href="/user/personalInfo">个人设置</a>
+                                <a href="/user/personalInfoRedirect">个人设置</a>
                                 <a href="/logout">退出</a>
                             </div>
                         </div>
                         <div class="searchCon clearfix">
-                            <input type="text" value="搜索书籍" id="keyword">
-                            <a href="/serverLogin" class="newseach_click"></a>
-                            <%--<div class="searchPan">--%>
-                            <%--<a href="javascript:void(0);" value="show" class="show">演出</a>--%>
-                            <%--<a href="javascript:void(0);" value="vanue" class="vanue">场馆</a>--%>
-                            <%--</div>--%>
+                            <input type="text" value="搜索书籍" id="keyword" name="keyword">
+                            <a class="newseach_click"></a>
                         </div>
                     </div>
                 </div>
+
             </div>
             <!-- Brand and toggle get grouped for better mobile display -->
         </div>
@@ -201,12 +210,7 @@
                 <form id="avatar_form" action="/SpringMVC006/springUpload" enctype="multipart/form-data" style="display:none;" method="POST" target="avatar_iframe">
                     <input id="avatar_input" name="picture" type="file" class="file" accept="image/*" />
                 </form>
-                <c:if test="${empty imgAddress}">
-                    <img id = "avatar_img" width="100" height="100" src="http://static.show.wepiao.com/thumb/auto/80/107//pc/img/defaultpic.gif" class="circle">
-                </c:if>
-                <c:if test="${!empty imgAddress}">
-                    <img id = "avatar_img" width="100" height="100" src="/portraitImg/images/${imgAddress}" >
-                </c:if>
+                    <img id = "avatar_img" width="100" height="100" src="/portraitImg/images/userPortrait.jpg" >
                 <%--<form name="Form2" action="/SpringMVC006/springUpload" method="post"  enctype="multipart/form-data">--%>
                 <%--<input type="file" name="file">--%>
                 <%--<input type="submit" value="upload"/>--%>
@@ -226,7 +230,7 @@
                         </h3>
                     </c:if>
                     <p>
-                        <a href="/user/personalInfo" class="btn btn-default btn-lg" role="button">修改个人资料</a>
+                        <a href="/user/personalInfoRedirect" class="btn btn-default btn-lg" role="button">修改个人资料</a>
                     </p>
                 </div>
                 <br>
@@ -244,7 +248,7 @@
                 <nav class="my_center_sidenav">
                     <ul class="nav text-right">
                         <li ><a href="/user/showAllTransaction">借书订单</a></li>
-                        <li class="active"><a href="/user/personalInfo">个人信息</a></li>
+                        <li class="active"><a href="/user/personalInfoRedirect">个人信息</a></li>
                     </ul>
                 </nav>
             </div>
@@ -290,11 +294,11 @@
                                                         <div id="msg" style="color:red;"></div>
                                                         <div class="form-group">
                                                             <div class="left-container"><label for="modifyPassword">输入修改密码:</label></div>
-                                                            <input type="text" class="form-control" id="modifyPassword" name="modifyPassword" placeholder="输入修改密码"/>
+                                                            <input type="password" class="form-control" id="modifyPassword" name="modifyPassword" placeholder="输入修改密码"/>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="left-container"><label for="confirmModifyPassword">输入确认密码:</label></div>
-                                                            <input type="text" class="form-control" id="confirmModifyPassword" name="confirmModifyPassword" placeholder="输入确认密码:" onchange="checkpwd()"/>
+                                                            <input type="password" class="form-control" id="confirmModifyPassword" name="confirmModifyPassword" placeholder="输入确认密码:" onchange="checkpwd()"/>
                                                         </div>
                                                         <button type="submit" class="btn btn-primary" >
                                                             提交更改
@@ -333,7 +337,7 @@
                                 <dl>
                                     <dt>名:</dt>
                                     <dd>
-                                        <input type="text" name="firstName" id="firstName" value="${consumer.firstName}" ></dd>
+                                        <input type="text" name="firstName" id="firstName" class="form-control" value="${consumer.firstName}" ></dd>
                                 </dl>
                                 <dl>
                                     <dt>院系:</dt>

@@ -47,11 +47,13 @@
         </div>
 
         <!-- 把 id 一并写入 userP 中 -->
+
         <input type="hidden" id="idadminstrator" name="idadminstrator" value="${adminUser.idadminstrator}"/>
         <div class="form-group">
             <a href="/admin/adminUsers/back" type="button" class="btn btn-primary btn-sm">返回</a></h3>
             <button type="submit" class="btn btn-sm btn-success">提交</button>
         </div>
+        
     </form:form>
 </div>
 

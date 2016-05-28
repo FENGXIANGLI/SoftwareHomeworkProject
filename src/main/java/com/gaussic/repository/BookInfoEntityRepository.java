@@ -33,13 +33,7 @@ public interface BookInfoEntityRepository extends JpaRepository<BookInfoEntity,I
 
     @Modifying
     @Transactional
-    @Query("update BookInfoEntity us set us.atLibOrNot =:qAtLibOrNot where us.id =:qId")
-    public void updateById(@Param("qAtLibOrNot") Integer atLibOrNot, @Param("qId") Integer id);
-
-    @Modifying
-    @Transactional
-    @Query("update BookInfoEntity us set us.shouldreturnTime=:qShouldreturnTime where us.id=:qId")
-    public void updateShouldreturnTimeById(@Param("qShouldreturnTime") Date shouldreturnTime, @Param("qId") Integer id);
-
+    @Query("update BookInfoEntity us set us.shouldreturnTime=:qShouldreturnTime,us.atLibOrNot =:qAtLibOrNot,us.idBorrowed =:qIdBorrowed where us.id=:qId")
+    public void updateBorrowPartTimeById(@Param("qAtLibOrNot") Integer atLibOrNot, @Param("qShouldreturnTime") Date shouldreturnTime ,@Param("qIdBorrowed") Integer idBorrowed,@Param("qId") Integer id);
 
 }

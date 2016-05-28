@@ -46,6 +46,12 @@
   <script>customApp = ['C/item/search','Main',''];</script>
   <script src="http://static.show.wepiao.com/pc/js/init.js?v=dc52da8"></script>
 
+    <script>
+        function all(){
+            window.location.href="/login";
+        }
+    </script>
+
   <!-- ie9及以下浏览器升级提示 -->
   <!--[if lte IE 9]>
       <style>
@@ -149,14 +155,18 @@
             </div>
           </div>
         </div>
+
+
+
         <!-- 城市筛选 end -->
-        <div class="" id="wepiao-navbar-collapse-1">
-          <div class="menuCon clearfix">
-            <div class='navdrop'>
-              <a class="my-ticket menu_item" href="/user/bookPlatform/AllBook"><span>北大图书馆</span></a>
-            </div>
+          <div class="" id="wepiao-navbar-collapse-1">
+              <div class="menuCon clearfix">
+                  <div class='navdrop'>
+                      <a class="my-ticket menu_item" href="/user/bookPlatform/0"><span>北大图书馆</span></a>
+                  </div>
+              </div>
           </div>
-        </div>
+
         <div class="">
           <div class="" id="login-in">
 
@@ -169,7 +179,7 @@
               </div>
               <div class="userMsglist">
                 <a href="/user/showAllTransaction" class="first">借书单</a>
-                <a href="/user/personalInfo">个人设置</a>
+                <a href="/user/personalInfoRedirect">个人设置</a>
                 <a href="/logout">退出</a>
               </div>
             </div>
@@ -180,6 +190,7 @@
             </div>
           </div>
         </div>
+
       </div>
       <!-- Brand and toggle get grouped for better mobile display -->
     </div>
@@ -197,9 +208,10 @@
         <div class="tl_item type clearfix">
           <h3>项目类别</h3>
           <ul class="i1 clearfix ul-1" >
-            <li class="type-1 on" value="">全部</li>
-            <li class="type-1 " value="ff8080814a7ad6f1014a7adb6b540002">已借出</li>
-            <li class="type-1 " value="ff8080814aed3ba8014af14d441c0012">可借入</li>
+
+            <a href="/user/bookPlatform/0"><li class="type-1 on">全部</li></a>
+              <a href="/user/bookPlatform/1"><li class="type-1 on">可借入</li></a>
+              <a href="/user/bookPlatform/2"><li class="type-1 on">已借出</li></a>
           </ul>
         </div>
       </div>
@@ -219,7 +231,7 @@
         <c:forEach items="${bookList}" var="book">
 
           <dl class="clearfix">
-            <dt><img title="" alt="" src="/portraitImg/images/${book.bookName}_book.jpg">
+            <dt><img title="" alt="" width="100" height="" src="/portraitImg/images/${book.id}_book.jpg">
             </dt>
             <dd>
               <div class="ddleft fll">
@@ -246,22 +258,17 @@
                   <span class="pre_sale wp-icon-all">可借阅</span>
                 </c:if>
 
-                <p class="price"><span>${book.price}</span>元起</p>
+                <p class="price"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;</p>
                 <a class="buy_btn" href="/user/borrow/${book.id}/${userId}/">借入</a>
               </div>
             </dd>
           </dl>
 
         </c:forEach>
-
-
       </c:if>
         </div>
       </div>
       <%--</c:if>--%>
-
-
-
 
       <ul id="yw0" class="yiiPager"><li class="prev hidden"><a href="/index.php?r=item/search&amp;city=&amp;t1=&amp;t2=&amp;t3=1">首页</a></li>
         <li class="previous hidden"><a href="/index.php?r=item/search&amp;city=&amp;t1=&amp;t2=&amp;t3=1">上一页</a></li>
@@ -278,10 +285,6 @@
 
   </div>
 </div>
-
-
-
-
 
 
 <div class="footer">

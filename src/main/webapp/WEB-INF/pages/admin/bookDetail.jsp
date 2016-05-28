@@ -30,7 +30,8 @@
 <div class="container">
   <h1>书籍详情</h1>
   <hr/>
-  <a href="/admin/users" type="button" class="btn btn-primary btn-sm">返回</a></h3>
+  <c:if test="${empty root}"><a href="/admin/books" type="button" class="btn btn-primary btn-sm">返回</a></h3></c:if>
+  <c:if test="${!empty root}"><a href="/admin/adminUsers/books" type="button" class="btn btn-primary btn-sm">返回</a></h3></c:if>
   <table class="table table-bordered table-striped">
     <tr>
       <th>索书号</th>

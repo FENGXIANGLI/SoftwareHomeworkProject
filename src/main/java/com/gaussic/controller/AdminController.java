@@ -256,8 +256,12 @@ public class AdminController {
     // @PathVariable可以收集url中的变量，需匹配的变量用{}括起来
     // 例如：访问 localhost:8080/admin/users/show/1 ，将匹配 id = 1
     @RequestMapping(value ="/admin/users/show/{id}", method = RequestMethod.GET)
-    public String showUser(@PathVariable("id") Integer userId, ModelMap modelMap ){
+    public String showUser(@PathVariable("id") Integer userId, ModelMap modelMap , HttpServletRequest request){
         // 找到userId表示的用户
+        if (!request.getSession().getAttribute("rootAdminLogin").equals(null)){
+            modelMap.addAttribute("root","yes");
+        }
+
         UserEntity userEntity = userRepository.findOne(userId);
         modelMap.addAttribute("user", userEntity);
         return  "/admin/userDetail";
@@ -265,7 +269,11 @@ public class AdminController {
 
     // 更新用户信息 页面
     @RequestMapping(value = "/admin/users/update/{id}", method = RequestMethod.GET)
-    public String updateUser(@PathVariable("id") Integer userId, ModelMap modelMap) {
+    public String updateUser(@PathVariable("id") Integer userId, ModelMap modelMap ,HttpServletRequest request) {
+
+        if (!request.getSession().getAttribute("rootAdminLogin").equals(null)){
+            modelMap.addAttribute("root","yes");
+        }
 
         // 找到userId所表示的用户
         UserEntity userEntity = userRepository.findOne(userId);
@@ -313,7 +321,7 @@ public class AdminController {
         modelMap.addAttribute("bookList", bookInfoEntityList);
 
         modelMap.addAttribute("userBorrowedName",userBorrowedName);
-        modelMap.addAttribute("userPId",userPId);
+        modelMap.addAttribute("userPId",userId);
         return "/admin/userBorrowBooks";
     }
 
@@ -340,7 +348,11 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/books/show/{id}",method = RequestMethod.GET)
-    public String showBook(@PathVariable("id") Integer bookId, ModelMap modelMap){
+    public String showBook(@PathVariable("id") Integer bookId, ModelMap modelMap ,HttpServletRequest request){
+
+        if (!request.getSession().getAttribute("rootAdminLogin").equals(null)){
+            modelMap.addAttribute("root","yes");
+        }
         BookInfoEntity bookInfoEntity  = bookInfoEntityRepository.findOne(bookId);
         modelMap.addAttribute("book",bookInfoEntity);
         return "/admin/bookDetail";
@@ -354,7 +366,11 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/books/update/{id}", method = RequestMethod.GET)
-    public String updateBook(@PathVariable("id") Integer bookId, ModelMap modelMap){
+    public String updateBook(@PathVariable("id") Integer bookId, ModelMap modelMap,HttpServletRequest request){
+
+        if (!request.getSession().getAttribute("rootAdminLogin").equals(null)){
+            modelMap.addAttribute("root","yes");
+        }
         // 找到userId所表示的用户
         BookInfoEntity bookInfoEntity = bookInfoEntityRepository.findOne(bookId);
 

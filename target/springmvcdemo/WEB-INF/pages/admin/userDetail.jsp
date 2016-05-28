@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -22,7 +23,9 @@
 <div class="container">
     <h1>用户详情</h1>
     <hr/>
-    <a href="/admin/users" type="button" class="btn btn-primary btn-sm">返回</a></h3>
+    <c:if test="${empty root}"><a href="/admin/users" type="button" class="btn btn-primary btn-sm">返回</a></h3></c:if>
+    <c:if test="${!empty root}"><a href="/admin/adminUsers/users" type="button" class="btn btn-primary btn-sm">返回</a></h3></c:if>
+
     <table class="table table-bordered table-striped">
         <tr>
             <th>账号</th>
@@ -54,7 +57,7 @@
         </tr>
         <tr>
             <th>已借书籍</th>
-            <td>${user.borrowBookNum} <a href="/admin/user/bookBorrow/${user.studentId}/${user.account}/${user.id}">详情</a></td>
+            <td>${user.borrowBookNum} <a href="/admin/user/bookBorrow/${user.id}/${user.account}/${user.studentId}">详情</a></td>
 
         </tr>
         <tr>

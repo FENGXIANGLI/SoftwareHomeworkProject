@@ -78,7 +78,7 @@
   <!-- 如果用户列表为空 -->
   <c:if test="${empty userList}">
     <div class="alert alert-warning" role="alert">
-      <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>User表为空，请<a href="/admin/users/add" type="button" class="btn btn-primary btn-sm">添加</a>
+      <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>User表为空
     </div>
   </c:if>
 
@@ -87,6 +87,7 @@
     <table class="table table-bordered table-striped">
       <tr>
         <th>学号</th>
+        <th>账号</th>
         <th>昵称</th>
         <th>姓名</th>
         <th>操作</th>
@@ -95,6 +96,7 @@
       <c:forEach items="${userList}" var="user">
         <tr>
           <td>${user.studentId}</td>
+          <td>${user.account}</td>
           <td>${user.nickname}</td>
           <td>${user.firstName} ${user.lastName}</td>
           <td>
