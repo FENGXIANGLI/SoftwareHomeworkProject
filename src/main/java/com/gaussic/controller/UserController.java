@@ -38,24 +38,25 @@ package com.gaussic.controller;
 class UserController {
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     BookInfoEntityRepository bookInfoEntityRepository;
 
     @Autowired
     TransactionEntityRepository transactionEntityRepository;
+
     Set<Integer> user_IdSet = new HashSet<Integer>();
+
 
     private Map<Long, UserEntity> userMap = new ConcurrentHashMap<Long, UserEntity>();
 
     private String userAccount;
 
-    private Integer userId;
-
     @RequestMapping(value = "/user/register", method = RequestMethod.GET)
     public String registerPage(HttpServletRequest request){
         request.getSession().removeAttribute("error");
         request.getSession().removeAttribute("rightValue");
-        return "user/register";
+        return "/user/register";
     }
 
     @RequestMapping(value = "/user/register",method = RequestMethod.POST)
@@ -120,7 +121,8 @@ class UserController {
             return "redirect:/login";
         }
 
-        UserEntity userEntity = userRepository.findByAccountName(this.userAccount);
+        String userAccount = request.getSession().getAttribute("alreadyLogin").toString();
+        UserEntity userEntity = userRepository.findByAccountName(userAccount);
         modelMap.addAttribute("consumer",userEntity);
         return "/user/personalInfo";
     }
@@ -159,7 +161,7 @@ class UserController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("alreadyLogin","YES");
+        session.setAttribute("alreadyLogin",inputAccount);
 
         String userId = userPassUserMap.get(inputAccount)[1];
         session.setAttribute("userToken", userId);
@@ -186,42 +188,40 @@ class UserController {
         List<BookInfoEntity> bookInfoEntityList = bookInfoEntityRepository.findAll();
         session.setAttribute("bookNumbers",bookInfoEntityList.size());
 
-        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllByAccount(this.userAccount);
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllByAccount(userAccount);
         modelMap.addAttribute("transactionList",transactionEntityList);
-
         modelMap.addAttribute("pageType",0);
 
+        modelMap.addAttribute("bookList", bookInfoEntityList);
 
-
-
-        this.userId = Integer.parseInt(userId);
-        this.userAccount = userAccount;
-
-        return "/user/userProfile";
+        return "/user/userBookPlatform";
     }
 
     @RequestMapping(value = "/user/showAllTransaction",method = RequestMethod.GET)
-    public String showAllTransaction(ModelMap modelMap){
+    public String showAllTransaction(ModelMap modelMap ,HttpServletRequest request){
         modelMap.addAttribute("pageType",0);
 
-        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllByAccount(this.userAccount);
+        String userAccount = request.getSession().getAttribute("alreadyLogin").toString();
+
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllByAccount(userAccount);
         modelMap.addAttribute("transactionList", transactionEntityList);
         return "/user/userProfile";
     }
 
     @RequestMapping(value = "/user/showShouldReturnTransaction",method = RequestMethod.GET)
-    public String showReturnTransaction(ModelMap modelMap){
+    public String showReturnTransaction(ModelMap modelMap, HttpServletRequest request){
         modelMap.addAttribute("pageType",1);
-
-        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(this.userAccount, TransactionTypeConsts.unReturned);
+        String userAccount = request.getSession().getAttribute("alreadyLogin").toString();
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(userAccount, TransactionTypeConsts.unReturned);
         modelMap.addAttribute("transactionList", transactionEntityList);
         return "/user/userProfile";
     }
 
     @RequestMapping(value = "/user/showFinishedTransaction",method = RequestMethod.GET)
-    public String showFinishedTransaction(ModelMap modelMap){
+    public String showFinishedTransaction(ModelMap modelMap, HttpServletRequest request){
         modelMap.addAttribute("pageType",2);
-        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(this.userAccount, TransactionTypeConsts.Finished);
+        String userAccount = request.getSession().getAttribute("alreadyLogin").toString();
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(userAccount, TransactionTypeConsts.Finished);
         modelMap.addAttribute("transactionList", transactionEntityList);
         return "/user/userProfile";
     }
@@ -233,6 +233,7 @@ class UserController {
             modelMap.addAttribute("transactionList",transactionEntityList);
             return "/user/userProfile";
         }
+
         return "/index";
     }
 
@@ -295,12 +296,12 @@ class UserController {
         return "redirect:/user/userProfile";
     }
 
-    @RequestMapping(value = "/user/modifyPassword", method = RequestMethod.POST)
-    public String updateUser(ModelMap modelMap ,HttpServletRequest request){
+    @RequestMapping(value = "/user/modifyPassword/{id}", method = RequestMethod.POST)
+    public String updateUser(ModelMap modelMap ,HttpServletRequest request, @PathVariable("id") Integer userId){
         String inputPassword = request.getParameter("modifyPassword");
         String  inputConfirmPassword= request.getParameter("confirmModifyPassword");
 
-        UserEntity userEntity = userRepository.findOne(this.userId);
+        UserEntity userEntity = userRepository.findOne(userId);
 
         System.out.println("testUserModify:" + inputPassword + inputConfirmPassword);
         if (inputPassword.equals("")||!inputPassword.equals(inputConfirmPassword)){
@@ -310,13 +311,73 @@ class UserController {
         }else {
             userEntity.setPassword(inputConfirmPassword);
             userRepository.updateUser(userEntity.getBirthday(),userEntity.getAccount(),userEntity.getNickname(),userEntity.getLastName(),userEntity.getFirstName(),userEntity.getPassword(),userEntity.getStudentId(),userEntity.getDepartment(),userEntity.getBorrowBookNum(),userEntity.getAllowAmountBookNum(),userEntity.getDefaultTimes(),userEntity.getDefaultTotalDay(),userEntity.getUserGender(),userEntity.getId());
-            modelMap.addAttribute("succeedModify","succeed!");
+            modelMap.addAttribute("succeedModify", "succeed!");
             modelMap.addAttribute("consumer",userEntity);
             return "/user/personalInfo";
         }
-//        System.out.println("testUser" + userEntity.getAccount());
-
-
     }
 
+    @RequestMapping(value = "/user/updateProfile/{id}", method = RequestMethod.POST)
+    public String updateProfile(@ModelAttribute("updatePersonalUser") UserEntity userUpdateEntity,ModelMap modelMap, @PathVariable("id") Integer userId){
+        UserEntity userEntity = userRepository.findOne(userId);
+        modelMap.addAttribute("succeedModify", "succeed!");
+        userEntity.setNickname(userUpdateEntity.getNickname());
+        userEntity.setLastName(userUpdateEntity.getLastName());
+        userEntity.setFirstName(userUpdateEntity.getFirstName());
+        userEntity.setDepartment(userUpdateEntity.getDepartment());
+        userEntity.setUserGender(userUpdateEntity.getUserGender());
+        userRepository.updateUser(userEntity.getBirthday(),userEntity.getAccount(),userEntity.getNickname(),userEntity.getLastName(),userEntity.getFirstName(),userEntity.getPassword(),userEntity.getStudentId(),userEntity.getDepartment(),userEntity.getBorrowBookNum(),userEntity.getAllowAmountBookNum(),userEntity.getDefaultTimes(),userEntity.getDefaultTotalDay(),userEntity.getUserGender(),userEntity.getId());
+        modelMap.addAttribute("consumer",userEntity);
+        return "/user/personalInfo";
+    }
+
+    @RequestMapping(value = "/user/borrow/{id}/{userId}" , method = RequestMethod.GET)
+    public String userBorrowBook(@PathVariable("id") Integer bookId,@PathVariable("userId") Integer userId,ModelMap modelMap){
+        System.out.println("bookId: " + bookId);
+
+        BookInfoEntity bookInfoEntity = bookInfoEntityRepository.findOne(bookId);
+
+
+        System.out.println("here");
+
+//        成功借出
+        if (bookInfoEntity.getAtLibOrNot() == 1){
+
+            Date currentDate = new Date();
+            Date shouldReturnDate = CommonUtils.addMonth(currentDate);
+
+            bookInfoEntityRepository.updateShouldreturnTimeById(shouldReturnDate,bookId);
+
+            UserEntity userEntity = userRepository.findOne(userId);
+            HashSet<Integer> tranIdSet = new HashSet<Integer>();
+            List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAll();
+            for(TransactionEntity transactionEntity:transactionEntityList){
+                tranIdSet.add(transactionEntity.getId());
+            }
+            TransactionEntity newTransaction = CommonUtils.generateTransaction(bookInfoEntity, userEntity, tranIdSet);
+            transactionEntityRepository.saveAndFlush(newTransaction);
+            bookInfoEntityRepository.updateById(0,bookId);
+            modelMap.addAttribute("borrowStatus",1);
+        }else {
+            modelMap.addAttribute("borrowStatus",0);
+        }
+        List<BookInfoEntity> bookInfoEntityList = bookInfoEntityRepository.findAll();
+        modelMap.addAttribute("bookList",bookInfoEntityList);
+        return "/user/userBookPlatform";
+    }
+
+    @RequestMapping(value = "/user/renewBook/{id}/{pageType}", method = RequestMethod.GET)
+    public String renewBook(ModelMap modelMap, @PathVariable("id")Integer transactionId, @PathVariable("pageType") Integer pageType){
+        modelMap.addAttribute("pageType",pageType);
+
+        TransactionEntity modifyTransactionEntity = transactionEntityRepository.findById(transactionId);
+
+        Date modifiedDate = CommonUtils.addMonth(modifyTransactionEntity.getShouldReturnTime());
+
+        transactionEntityRepository.updateBorrowTimesById(modifyTransactionEntity.getBorrowTimes()+1,modifiedDate,transactionId);
+
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAll();
+        modelMap.addAttribute("transactionList",transactionEntityList);
+        return "/user/userProfile";
+    }
 }

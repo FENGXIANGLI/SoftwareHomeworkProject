@@ -145,6 +145,8 @@
                 </div>
                 <div class="">
                     <div class="" id="login-in">
+
+
                         <div id="user-state-container" class="logoOrSign">
                             <div style="" class="userPhoto">
                                 <img alt="" src="http://static.show.wepiao.com/thumb/auto/80/107//pc/img/defaultpic.gif"></div>
@@ -153,11 +155,12 @@
                                     <span class="user_point"></span>
                             </div>
                             <div class="userMsglist">
-                                <a href="/user/userProfile" class="first">借书单</a>
+                                <a href="/user/showAllTransaction" class="first">借书单</a>
                                 <a href="/user/personalInfo">个人设置</a>
                                 <a href="/logout">退出</a>
                             </div>
                         </div>
+
                         <div class="searchCon clearfix">
                             <input type="text" value="搜索书籍" id="keyword">
                             <a href="/serverLogin" class="newseach_click"></a>
@@ -225,7 +228,7 @@
             <div class="col-md-2">
                 <nav class="my_center_sidenav">
                     <ul class="nav text-right">
-                        <li class="active"><a href="/user/userProfile">借书订单</a></li>
+                        <li class="active"><a href="/user/showAllTransaction">借书订单</a></li>
                         <li><a href="/user/personalInfo">个人信息</a></li>
                     </ul>
                 </nav>
@@ -332,7 +335,7 @@
                                     </ul>
                                     <div class="op">
                                             <%--<a class="opbtn cancel" href="http://wepiao.com/index.php?r=user/cancelOrder/id/14641472614415#profile-top" onclick="prop_comfirm(arguments[0]);" >取消订单</a>--%>
-                                        <a class="opbtn pay" href="http://wepiao.com/index.php?r=payment/index/orderId/14641472614415#profile-top">
+                                        <a class="opbtn pay" href="/user/renewBook/${transaction.id}/${pageType}">
                                             续借
                                         </a>
                                     </div>

@@ -52,9 +52,14 @@ public class AdminController {
     public String index(HttpServletRequest request,ModelMap modelMap) {
         if (request.getSession().getAttribute("userToken") != null){
             System.out.println("userTokenProfile!!!");
-            return "/user/userProfile";
+            List<BookInfoEntity> bookInfoEntityList = bookInfoEntityRepository.findAll();
+            modelMap.addAttribute("bookList", bookInfoEntityList);
+            String userId = request.getSession().getAttribute("userToken").toString();
+            modelMap.addAttribute("userId",userId);
+            return "/user/userBookPlatform";
         }
-        return "index";
+
+        return "/index";
     }
 
     @RequestMapping(value = "/serverLogin", method = RequestMethod.GET)

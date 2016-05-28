@@ -26,6 +26,7 @@
       <column name="atLibOrNot" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="idBorrowed" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="bookNumber" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="shouldreturnTime" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
     <table name="transaction" schema="" catalog="springdemo" type="TABLE">
@@ -36,7 +37,7 @@
       <column name="shouldReturnTime" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="borrowTimes" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="returnOrNot" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <column name="returnTime" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="returnTime" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="bookName" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
       <column name="borrowName" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
       <column name="location" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>

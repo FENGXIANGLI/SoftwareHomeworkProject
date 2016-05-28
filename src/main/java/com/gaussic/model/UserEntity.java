@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 /**
- * Created by fengxiangli on 16/5/26.
+ * Created by fengxiangli on 16/5/27.
  */
 @Entity
 @Table(name = "user", schema = "", catalog = "springdemo")

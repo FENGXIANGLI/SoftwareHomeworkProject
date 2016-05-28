@@ -1,10 +1,10 @@
 package com.gaussic.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
- * Created by fengxiangli on 16/5/26.
+ * Created by fengxiangli on 16/5/27.
  */
 @Entity
 @Table(name = "transaction", schema = "", catalog = "springdemo")
@@ -12,11 +12,11 @@ public class TransactionEntity {
     private int id;
     private Integer userId;
     private Integer bookId;
-    private Timestamp borrowTime;
-    private Timestamp shouldReturnTime;
+    private Date borrowTime;
+    private Date shouldReturnTime;
     private Integer borrowTimes;
     private Integer returnOrNot;
-    private String returnTime;
+    private Date returnTime;
     private String bookName;
     private String borrowName;
     private String location;
@@ -53,21 +53,21 @@ public class TransactionEntity {
 
     @Basic
     @Column(name = "borrowTime", nullable = true, insertable = true, updatable = true)
-    public Timestamp getBorrowTime() {
+    public Date getBorrowTime() {
         return borrowTime;
     }
 
-    public void setBorrowTime(Timestamp borrowTime) {
+    public void setBorrowTime(Date borrowTime) {
         this.borrowTime = borrowTime;
     }
 
     @Basic
     @Column(name = "shouldReturnTime", nullable = true, insertable = true, updatable = true)
-    public Timestamp getShouldReturnTime() {
+    public Date getShouldReturnTime() {
         return shouldReturnTime;
     }
 
-    public void setShouldReturnTime(Timestamp shouldReturnTime) {
+    public void setShouldReturnTime(Date shouldReturnTime) {
         this.shouldReturnTime = shouldReturnTime;
     }
 
@@ -92,12 +92,12 @@ public class TransactionEntity {
     }
 
     @Basic
-    @Column(name = "returnTime", nullable = true, insertable = true, updatable = true, length = 45)
-    public String getReturnTime() {
+    @Column(name = "returnTime", nullable = true, insertable = true, updatable = true)
+    public Date getReturnTime() {
         return returnTime;
     }
 
-    public void setReturnTime(String returnTime) {
+    public void setReturnTime(Date returnTime) {
         this.returnTime = returnTime;
     }
 

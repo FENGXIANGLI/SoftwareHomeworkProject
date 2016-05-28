@@ -1,8 +1,9 @@
 package Utils;
 
-import java.util.Random;
-import java.util.Set;
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import com.gaussic.model.*;
 
 /**
  * Created by fengxiangli on 16/4/19.
@@ -43,5 +44,35 @@ public class CommonUtils {
                 .getTime().getTime() / 1000)) / 3600 / 24;
 
         return days;
+    }
+
+    public static TransactionEntity generateTransaction(BookInfoEntity bookInfoEntity, UserEntity userEntity, Set<Integer> ExceptNums){
+        TransactionEntity transactionEntity = new TransactionEntity();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        transactionEntity.setId(CommonUtils.getRandomExcept(100000,ExceptNums));
+        transactionEntity.setUserId(userEntity.getStudentId());
+        transactionEntity.setBookId(bookInfoEntity.getId());
+
+        Date currentDate = new Date();
+
+        transactionEntity.setBorrowTime(currentDate);
+
+        transactionEntity.setShouldReturnTime(addMonth(currentDate));
+        transactionEntity.setBorrowTimes(1);
+        transactionEntity.setReturnOrNot(0);
+        transactionEntity.setReturnTime(currentDate);
+        transactionEntity.setBookName(bookInfoEntity.getBookName());
+        transactionEntity.setBorrowName(userEntity.getAccount());
+        transactionEntity.setLocation(bookInfoEntity.getLocation());
+
+        return transactionEntity;
+    }
+
+    public static Date addMonth(Date currentDate){
+        Calendar calender = Calendar.getInstance();
+        calender.setTime(currentDate);
+        calender.add(Calendar.MONTH, 1);
+        return calender.getTime();
     }
 }

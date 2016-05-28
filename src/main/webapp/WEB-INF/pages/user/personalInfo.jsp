@@ -173,7 +173,7 @@
                                 <span class="user_point"></span>
                             </div>
                             <div class="userMsglist">
-                                <a href="/user/userProfile" class="first">借书单</a>
+                                <a href="/user/showAllTransaction" class="first">借书单</a>
                                 <a href="/user/personalInfo">个人设置</a>
                                 <a href="/logout">退出</a>
                             </div>
@@ -243,7 +243,7 @@
             <div class="col-md-2">
                 <nav class="my_center_sidenav">
                     <ul class="nav text-right">
-                        <li ><a href="/user/userProfile">借书订单</a></li>
+                        <li ><a href="/user/showAllTransaction">借书订单</a></li>
                         <li class="active"><a href="/user/personalInfo">个人信息</a></li>
                     </ul>
                 </nav>
@@ -286,7 +286,7 @@
                                                     </h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form:form action="/user/modifyPassword" method="post" commandName="registerUser" role="form" name="modalForm">
+                                                    <form:form action="/user/modifyPassword/${consumer.id}" method="post" commandName="registerUser" role="form" name="modalForm">
                                                         <div id="msg" style="color:red;"></div>
                                                         <div class="form-group">
                                                             <div class="left-container"><label for="modifyPassword">输入修改密码:</label></div>
@@ -316,7 +316,7 @@
                         </div>
                     </div>
 
-                    <form id="profileForm" action="/index.php?r=user/profile" method="post">
+                    <form id="profileForm" action="/user/updateProfile/${consumer.id}", method="post" commandName="updatePersonalUser" role="form">
 
                         <div class="row minfo">
                             <div class="col-md-12">
@@ -336,19 +336,9 @@
                                         <input type="text" name="firstName" id="firstName" value="${consumer.firstName}" ></dd>
                                 </dl>
                                 <dl>
-                                    <dt>账号名:</dt>
-                                    <dd>
-                                        <input type="text" name="account" id="account" class="form-control" value="${consumer.account}" ></dd>
-                                </dl>
-                                <dl>
                                     <dt>院系:</dt>
                                     <dd>
                                         <input type="text" name="department" id="department" class="form-control" value="${consumer.department}" ></dd>
-                                </dl>
-                                <dl>
-                                    <dt>学号:</dt>
-                                    <dd>
-                                        <input type="text" name="studentId" id="studentId" class="form-control" value="${consumer.studentId}" ></dd>
                                 </dl>
                                 <dl>
                                     <dt>性别</dt>

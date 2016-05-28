@@ -1,9 +1,10 @@
 package com.gaussic.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
- * Created by fengxiangli on 16/5/26.
+ * Created by fengxiangli on 16/5/27.
  */
 @Entity
 @Table(name = "bookInfo", schema = "", catalog = "springdemo")
@@ -19,6 +20,7 @@ public class BookInfoEntity {
     private Integer atLibOrNot;
     private Integer idBorrowed;
     private Integer bookNumber;
+    private Date shouldreturnTime;
 
     @Id
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
@@ -130,6 +132,16 @@ public class BookInfoEntity {
         this.bookNumber = bookNumber;
     }
 
+    @Basic
+    @Column(name = "shouldreturnTime", nullable = true, insertable = true, updatable = true)
+    public Date getShouldreturnTime() {
+        return shouldreturnTime;
+    }
+
+    public void setShouldreturnTime(Date shouldreturnTime) {
+        this.shouldreturnTime = shouldreturnTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -148,6 +160,8 @@ public class BookInfoEntity {
         if (atLibOrNot != null ? !atLibOrNot.equals(that.atLibOrNot) : that.atLibOrNot != null) return false;
         if (idBorrowed != null ? !idBorrowed.equals(that.idBorrowed) : that.idBorrowed != null) return false;
         if (bookNumber != null ? !bookNumber.equals(that.bookNumber) : that.bookNumber != null) return false;
+        if (shouldreturnTime != null ? !shouldreturnTime.equals(that.shouldreturnTime) : that.shouldreturnTime != null)
+            return false;
 
         return true;
     }
@@ -165,6 +179,7 @@ public class BookInfoEntity {
         result = 31 * result + (atLibOrNot != null ? atLibOrNot.hashCode() : 0);
         result = 31 * result + (idBorrowed != null ? idBorrowed.hashCode() : 0);
         result = 31 * result + (bookNumber != null ? bookNumber.hashCode() : 0);
+        result = 31 * result + (shouldreturnTime != null ? shouldreturnTime.hashCode() : 0);
         return result;
     }
 }

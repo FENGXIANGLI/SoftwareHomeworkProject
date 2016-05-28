@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,5 +26,16 @@ public interface BookInfoEntityRepository extends JpaRepository<BookInfoEntity,I
     @Transactional
     @Query("from BookInfoEntity us where us.idBorrowed =:qIdBorrowed")
     public List<BookInfoEntity> findByIdBorrowed(@Param("qIdBorrowed") Integer idBorrowed);
+
+    @Modifying
+    @Transactional
+    @Query("update BookInfoEntity us set us.atLibOrNot =:qAtLibOrNot where us.id =:qId")
+    public void updateById(@Param("qAtLibOrNot") Integer atLibOrNot, @Param("qId") Integer id);
+
+    @Modifying
+    @Transactional
+    @Query("update BookInfoEntity us set us.shouldreturnTime=:qShouldreturnTime where us.id=:qId")
+    public void updateShouldreturnTimeById(@Param("qShouldreturnTime") Date shouldreturnTime, @Param("qId") Integer id);
+
 
 }
