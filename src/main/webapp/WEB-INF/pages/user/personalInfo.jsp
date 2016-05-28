@@ -269,7 +269,7 @@
                                         修改密码
                                     </button>
 
-                                    <c:if test="${!empty succeedModify}"><dt style="color: mediumaquamarine">修改成功!</dt></c:if>
+                                    <c:if test="${!empty resultModify}"><dt style="color: mediumaquamarine">${resultModify}</dt></c:if>
 
 
                                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog"

@@ -153,7 +153,7 @@
         <div class="" id="wepiao-navbar-collapse-1">
           <div class="menuCon clearfix">
             <div class='navdrop'>
-              <a class="my-ticket menu_item"><span>北大图书馆</span></a>
+              <a class="my-ticket menu_item" href="/user/bookPlatform/AllBook"><span>北大图书馆</span></a>
             </div>
           </div>
         </div>
@@ -207,10 +207,14 @@
       <c:if test="${empty bookList}">
         <h2>暂无借书单</h2>
       </c:if>
+
+      <c:if test="${!empty resultBorrow}">
+        <dt style="color: mediumaquamarine">${resultBorrow}</dt>
+      </c:if>
+
       <div class="type_list clearfix">
         <div class="type_list_box">
       <c:if test="${!empty bookList}">
-
 
         <c:forEach items="${bookList}" var="book">
 

@@ -29,7 +29,7 @@
     <script src="http://static.show.wepiao.com/pc/js/libs/html5shiv.min.js?v=94dc0e9"></script>
     <script src="http://static.show.wepiao.com/pc/js/libs/respond.min.js?v=94dc0e9"></script>
     <link href="http://static.show.wepiao.com/pc/html/respond-proxy.html?v=94dc0e9" id="respond-proxy" rel="respond-proxy" />
-    <link href="http://wepiao.com/pc/html/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+    <link href="http://wepiao.com/pc/html/respond.proxy.gif" isucceedModifyd="respond-redirect" rel="respond-redirect" />
     <script src="http://wepiao.com/pc/html/respond.proxy.js"></script>
     <![endif]-->
 

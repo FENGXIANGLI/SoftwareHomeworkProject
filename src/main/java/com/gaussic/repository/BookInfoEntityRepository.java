@@ -27,6 +27,10 @@ public interface BookInfoEntityRepository extends JpaRepository<BookInfoEntity,I
     @Query("from BookInfoEntity us where us.idBorrowed =:qIdBorrowed")
     public List<BookInfoEntity> findByIdBorrowed(@Param("qIdBorrowed") Integer idBorrowed);
 
+    @Transactional
+    @Query("from BookInfoEntity us where us.atLibOrNot =:qAtLibOrNot")
+    public List<BookInfoEntity> findByAtLibOrNot(@Param("qAtLibOrNot") Integer atLibOrNot);
+
     @Modifying
     @Transactional
     @Query("update BookInfoEntity us set us.atLibOrNot =:qAtLibOrNot where us.id =:qId")

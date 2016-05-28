@@ -16,7 +16,6 @@ package com.gaussic.controller;
 
         import javax.servlet.http.HttpServletRequest;
         import javax.servlet.http.HttpSession;
-        import javax.swing.text.html.parser.Parser;
         import javax.validation.Valid;
         import java.io.File;
         import java.io.IOException;
@@ -199,7 +198,7 @@ class UserController {
 
     @RequestMapping(value = "/user/showAllTransaction",method = RequestMethod.GET)
     public String showAllTransaction(ModelMap modelMap ,HttpServletRequest request){
-        modelMap.addAttribute("pageType",0);
+        modelMap.addAttribute("pageType",Consts.ALLTRANSACTION);
 
         String userAccount = request.getSession().getAttribute("alreadyLogin").toString();
 
@@ -210,18 +209,18 @@ class UserController {
 
     @RequestMapping(value = "/user/showShouldReturnTransaction",method = RequestMethod.GET)
     public String showReturnTransaction(ModelMap modelMap, HttpServletRequest request){
-        modelMap.addAttribute("pageType",1);
+        modelMap.addAttribute("pageType",Consts.SHOULDRETURNSACTION);
         String userAccount = request.getSession().getAttribute("alreadyLogin").toString();
-        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(userAccount, TransactionTypeConsts.unReturned);
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(userAccount, Consts.unReturned);
         modelMap.addAttribute("transactionList", transactionEntityList);
         return "/user/userProfile";
     }
 
     @RequestMapping(value = "/user/showFinishedTransaction",method = RequestMethod.GET)
     public String showFinishedTransaction(ModelMap modelMap, HttpServletRequest request){
-        modelMap.addAttribute("pageType",2);
+        modelMap.addAttribute("pageType",Consts.FINISHEDTRANSACTION);
         String userAccount = request.getSession().getAttribute("alreadyLogin").toString();
-        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(userAccount, TransactionTypeConsts.Finished);
+        List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(userAccount, Consts.Finished);
         modelMap.addAttribute("transactionList", transactionEntityList);
         return "/user/userProfile";
     }
@@ -307,11 +306,12 @@ class UserController {
         if (inputPassword.equals("")||!inputPassword.equals(inputConfirmPassword)){
             System.out.println("hereError");
             modelMap.addAttribute("consumer",userEntity);
+            modelMap.addAttribute("resultModify", "修改失败");
             return "/user/personalInfo";
         }else {
             userEntity.setPassword(inputConfirmPassword);
             userRepository.updateUser(userEntity.getBirthday(),userEntity.getAccount(),userEntity.getNickname(),userEntity.getLastName(),userEntity.getFirstName(),userEntity.getPassword(),userEntity.getStudentId(),userEntity.getDepartment(),userEntity.getBorrowBookNum(),userEntity.getAllowAmountBookNum(),userEntity.getDefaultTimes(),userEntity.getDefaultTotalDay(),userEntity.getUserGender(),userEntity.getId());
-            modelMap.addAttribute("succeedModify", "succeed!");
+            modelMap.addAttribute("resultModify", "修改成功");
             modelMap.addAttribute("consumer",userEntity);
             return "/user/personalInfo";
         }
@@ -337,9 +337,6 @@ class UserController {
 
         BookInfoEntity bookInfoEntity = bookInfoEntityRepository.findOne(bookId);
 
-
-        System.out.println("here");
-
 //        成功借出
         if (bookInfoEntity.getAtLibOrNot() == 1){
 
@@ -357,9 +354,9 @@ class UserController {
             TransactionEntity newTransaction = CommonUtils.generateTransaction(bookInfoEntity, userEntity, tranIdSet);
             transactionEntityRepository.saveAndFlush(newTransaction);
             bookInfoEntityRepository.updateById(0,bookId);
-            modelMap.addAttribute("borrowStatus",1);
+            modelMap.addAttribute("resultBorrow","成功借书");
         }else {
-            modelMap.addAttribute("borrowStatus",0);
+            modelMap.addAttribute("resultBorrow","不在馆，借书失败");
         }
         List<BookInfoEntity> bookInfoEntityList = bookInfoEntityRepository.findAll();
         modelMap.addAttribute("bookList",bookInfoEntityList);
@@ -379,5 +376,21 @@ class UserController {
         List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAll();
         modelMap.addAttribute("transactionList",transactionEntityList);
         return "/user/userProfile";
+    }
+
+    @RequestMapping(value = "/user/bookPlatform/",method = RequestMethod.GET)
+    public String allBooks(ModelMap modelMap, @PathVariable("id") Integer type){
+        List<BookInfoEntity> bookInfoEntityList;
+        if (type == Consts.ALLBOOKS){
+            bookInfoEntityList = bookInfoEntityRepository.findAll();
+            modelMap.addAttribute("bookList",bookInfoEntityList);
+        }else if (type == Consts.AVAILABLEBOOKS){
+            bookInfoEntityList = bookInfoEntityRepository.findByAtLibOrNot(Consts.ATLIB);
+            modelMap.addAttribute("bookList",bookInfoEntityList);
+        }else if (type == Consts.BORROWEDBOOKS){
+            bookInfoEntityList = bookInfoEntityRepository.findByAtLibOrNot(Consts.NOTATLIB);
+            modelMap.addAttribute("bookList",bookInfoEntityList);
+        }
+        return "/user/bookPlatform";
     }
 }
