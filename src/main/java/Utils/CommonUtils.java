@@ -59,7 +59,7 @@ public class CommonUtils {
         transactionEntity.setBorrowTime(currentDate);
 
         transactionEntity.setShouldReturnTime(addMonth(currentDate));
-        transactionEntity.setBorrowTimes(1);
+        transactionEntity.setBorrowTimes(0);
         transactionEntity.setReturnOrNot(0);
         transactionEntity.setReturnTime(currentDate);
         transactionEntity.setBookName(bookInfoEntity.getBookName());

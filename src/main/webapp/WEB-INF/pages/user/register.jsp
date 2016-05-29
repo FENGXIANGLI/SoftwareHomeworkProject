@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -30,24 +31,22 @@
 <body>
 <div class="container">
     <h1>用户注册</h1>
-    <%
-        Object errorValues=session.getAttribute("error");
-        Object rightValue = session.getAttribute("rightValue");
-    %>
-    <% if (errorValues != null) { %>
-    <div class="alert alert-danger" role="alert">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span class="sr-only">错误:</span>
-        <%=errorValues %>
-    </div>
-    <% }  %>
-    <% if (rightValue != null) { %>
-    <div class="alert alert-success" role="alert">
+
+    <c:if test="${!empty error}">
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">错误:</span>
+                ${error}
+        </div>
+    </c:if>
+
+    <c:if test="${!empty rightValue}">
+        <div class="alert alert-succeed" role="alert">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <span class="sr-only">成功:</span>
-        <%=rightValue %>
-    </div>
-    <% }  %>
+        ${rightValue}
+        </div>
+    </c:if>
 
     <form:form action="/user/register" method="post" commandName="registerUser" role="form">
         <div class="form-group">
@@ -70,6 +69,11 @@
             <label for="password">密码:</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="输入密码:"/>
         </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">验证密码:</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="再次输入密码:"/>
+        </div>
         <div class="form-group">
             <label for="studentId">学号:</label>
             <input type="text" class="form-control" id="studentId" name="studentId" placeholder="输入学号:"/>
@@ -90,15 +94,6 @@
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">生日</label>
-            <div class="controls input-append date form_date" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd" >
-                <input size="16" type="text" value="" readonly id = "birthday" name="birthday">
-                <span class="add-on"><i class="icon-remove"></i></span>
-                <span class="add-on"><i class="icon-th"></i></span>
-            </div>
-            <input type="hidden" id="dtp_input2" value=""/><br/>
-        </div>
         <input type="hidden" id="allowAmountBookNum" name="allowAmountBookNum" value="3"/>
         <input type="hidden" id="borrowBookNum" name="borrowBookNum" value="0"/>
         <input type="hidden" id="defaultTimes" name="defaultTimes" value="0"/>

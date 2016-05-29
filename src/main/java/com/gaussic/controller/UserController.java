@@ -59,39 +59,31 @@ class UserController {
     }
 
     @RequestMapping(value = "/user/register",method = RequestMethod.POST)
-    public String register(HttpServletRequest request,@Valid @ModelAttribute("registerUser")UserEntity userEntity, BindingResult result, String birthday){
+    public String register(ModelMap modelMap,HttpServletRequest request,@Valid @ModelAttribute("registerUser")UserEntity userEntity, BindingResult result, String birthday){
 
         try {
+//            confirmPassword
             System.out.println("hereTest");
-            request.getSession().getAttribute("gender_1");
 
-            SimpleDateFormat bartDateFormat = new SimpleDateFormat("MM dd yyyy");
+//            System.out.println("lastNamePassword::"+request.getSession().getAttribute("lastName"));
 
-            System.out.println("birthday:Here:: " + birthday);
-            java.util.Date date = bartDateFormat.parse(birthday);
-            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-            System.out.println(sqlDate.getTime());
-            userEntity.setBirthday(sqlDate);
-
-            request.getSession().removeAttribute("error");
-            request.getSession().removeAttribute("rightValue");
-
-            Boolean onlySqlError = true;
             if (result.hasErrors()){
                 System.out.println("error");
                 List<ObjectError> objectError= result.getAllErrors();
                 List<String> errorArray = new ArrayList<String>();
 
-
-                System.out.println(objectError.get(0).getDefaultMessage());
-                if (objectError.get(0).getDefaultMessage().contains("java.sql.Date")){
-                    onlySqlError = false;
-                }
-                if (onlySqlError){
-                    request.getSession().setAttribute("error",objectError.get(0).getDefaultMessage());
+                    modelMap.addAttribute("error", objectError.get(0).getDefaultMessage());
                     return "/user/register";
-                }
             }
+
+//            System.out.println("confirmPassword::"+request.getSession().getAttribute("confirmPassword"));
+
+            if (!userEntity.getConfirmPassword().equals(userEntity.getPassword())){
+                System.out.println("InErrorhereTest");
+                modelMap.addAttribute("error","密码不一致!请重新输入");
+                return "/user/register";
+            }
+
             List<UserEntity> userList = userRepository.findAll();
             for (UserEntity userTest:userList) {
                 user_IdSet.add(userTest.getId());
@@ -105,7 +97,7 @@ class UserController {
             System.out.println(userEntity.getId());
             // 数据库中添加一个用户，并立即刷新缓存
             userRepository.saveAndFlush(userEntity);
-            request.getSession().setAttribute("rightValue","注册成功!");
+            modelMap.addAttribute("rightValue","注册成功");
             System.out.println("registerSucceed");
             return "/user/register";
         }catch (Exception e){
@@ -183,6 +175,9 @@ class UserController {
         System.out.println("userAccount:"+modelMap.get("imgAddress"));
 
         UserEntity loginEntity = userRepository.findOne(Integer.parseInt(userId));
+
+        request.getSession().setAttribute("userGender",loginEntity.getUserGender());
+
         modelMap.addAttribute("userGender", loginEntity.getUserGender());
 
         List<BookInfoEntity> bookInfoEntityList = bookInfoEntityRepository.findAll();
@@ -205,6 +200,7 @@ class UserController {
 
         List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllByAccount(userAccount);
         modelMap.addAttribute("transactionList", transactionEntityList);
+        modelMap.addAttribute("userGender",request.getSession().getAttribute("userGender"));
         return "/user/userProfile";
     }
 
@@ -214,6 +210,7 @@ class UserController {
         String userAccount = request.getSession().getAttribute("alreadyLogin").toString();
         List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(userAccount, Consts.unReturned);
         modelMap.addAttribute("transactionList", transactionEntityList);
+        modelMap.addAttribute("userGender",request.getSession().getAttribute("userGender"));
         return "/user/userProfile";
     }
 
@@ -223,6 +220,7 @@ class UserController {
         String userAccount = request.getSession().getAttribute("alreadyLogin").toString();
         List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllSpecifiedTypeByAccountAndReturnOrNot(userAccount, Consts.Finished);
         modelMap.addAttribute("transactionList", transactionEntityList);
+        modelMap.addAttribute("userGender",request.getSession().getAttribute("userGender"));
         return "/user/userProfile";
     }
 
@@ -231,6 +229,7 @@ class UserController {
         if (request.getSession().getAttribute("alreadyLogin") != null){
             List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAll();
             modelMap.addAttribute("transactionList",transactionEntityList);
+            modelMap.addAttribute("userGender",request.getSession().getAttribute("userGender"));
             return "/user/userProfile";
         }
 
@@ -255,6 +254,7 @@ class UserController {
             modelMap.addAttribute("imgAddress",request.getSession().getAttribute("imgAddress"));
         }
         modelMap.addAttribute("pageType",0);
+        modelMap.addAttribute("userGender",request.getSession().getAttribute("userGender"));
         return "/user/userProfile";
     }
 
@@ -295,6 +295,7 @@ class UserController {
         modelMap.addAttribute("imgAddress",request.getSession().getAttribute("imgAddress"));
         long  endTime=System.currentTimeMillis();
         System.out.println("方法三的运行时间："+String.valueOf(endTime-startTime)+"ms");
+        modelMap.addAttribute("userGender",request.getSession().getAttribute("userGender"));
         return "/user/userProfile";
     }
 
@@ -321,7 +322,7 @@ class UserController {
     }
 
     @RequestMapping(value = "/user/updateProfile/{id}", method = RequestMethod.POST)
-    public String updateProfile(@ModelAttribute("updatePersonalUser") UserEntity userUpdateEntity,ModelMap modelMap, @PathVariable("id") Integer userId){
+    public String updateProfile(@ModelAttribute("updatePersonalUser") UserEntity userUpdateEntity,ModelMap modelMap, @PathVariable("id") Integer userId,HttpServletRequest request){
         UserEntity userEntity = userRepository.findOne(userId);
         modelMap.addAttribute("succeedModify", "succeed!");
         userEntity.setNickname(userUpdateEntity.getNickname());
@@ -331,6 +332,8 @@ class UserController {
         userEntity.setUserGender(userUpdateEntity.getUserGender());
         userRepository.updateUser(userEntity.getBirthday(),userEntity.getAccount(),userEntity.getNickname(),userEntity.getLastName(),userEntity.getFirstName(),userEntity.getPassword(),userEntity.getStudentId(),userEntity.getDepartment(),userEntity.getBorrowBookNum(),userEntity.getAllowAmountBookNum(),userEntity.getDefaultTimes(),userEntity.getDefaultTotalDay(),userEntity.getUserGender(),userEntity.getId());
         modelMap.addAttribute("consumer",userEntity);
+        request.getSession().setAttribute("userGender",userUpdateEntity.getUserGender());
+        modelMap.addAttribute("userGender",userUpdateEntity.getUserGender());
         return "/user/personalInfo";
     }
 
@@ -339,15 +342,17 @@ class UserController {
         System.out.println("bookId: " + bookId);
 
         BookInfoEntity bookInfoEntity = bookInfoEntityRepository.findOne(bookId);
+        UserEntity userEntity = userRepository.findOne(userId);
 
 //        成功借出
-        if (bookInfoEntity.getAtLibOrNot() == 1){
+        if (userEntity.getBorrowBookNum()>=userEntity.getAllowAmountBookNum()){
+            modelMap.addAttribute("resultBorrow","借书失败，您借书额度！请及时归还书籍！");
+        }
+        else if (bookInfoEntity.getAtLibOrNot() > 0){
 
             Date currentDate = new Date();
             Date shouldReturnDate = CommonUtils.addMonth(currentDate);
 
-
-            UserEntity userEntity = userRepository.findOne(userId);
             HashSet<Integer> tranIdSet = new HashSet<Integer>();
             List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAll();
             for(TransactionEntity transactionEntity:transactionEntityList){
@@ -361,7 +366,7 @@ class UserController {
 
             transactionEntityRepository.saveAndFlush(newTransaction);
 
-            bookInfoEntityRepository.updateBorrowPartTimeById(0,shouldReturnDate,userId,bookId);
+            bookInfoEntityRepository.updateBorrowPartTimeById(bookInfoEntity.getAtLibOrNot() - 1,shouldReturnDate,userId,bookId);
 
             userRepository.updateBorrowBookNum(renewBorrowTimes,userAccount);
 
@@ -369,6 +374,7 @@ class UserController {
         }else {
             modelMap.addAttribute("resultBorrow","不在馆，借书失败");
         }
+
         List<BookInfoEntity> bookInfoEntityList = bookInfoEntityRepository.findAll();
         modelMap.addAttribute("bookList",bookInfoEntityList);
         return "/user/userBookPlatform";
@@ -384,10 +390,13 @@ class UserController {
 
         transactionEntityRepository.updateBorrowTimesById(modifyTransactionEntity.getBorrowTimes()+1,modifiedDate,transactionId);
 
+        bookInfoEntityRepository.updateShouldReturnTimeById(modifiedDate,modifyTransactionEntity.getBookId());
+
         String userAccount = request.getSession().getAttribute("alreadyLogin").toString();
 
         List<TransactionEntity> transactionEntityList = transactionEntityRepository.findAllByAccount(userAccount);
         modelMap.addAttribute("transactionList",transactionEntityList);
+        modelMap.addAttribute("userGender",request.getSession().getAttribute("userGender"));
         return "/user/userProfile";
     }
 
@@ -439,4 +448,6 @@ class UserController {
             return "/user/userBookPlatform";
         }
     }
+
+
 }

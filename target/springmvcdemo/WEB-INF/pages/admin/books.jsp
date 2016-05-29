@@ -29,7 +29,7 @@
 </head>
 <body>
 <div class="container">
-  <h1>北京大学图书管理系统-管理员平台</h1>
+  <h1>北京大学图书管理系统-普通管理员</h1>
   <hr/>
   <nav class="navbar navbar-default">
     <div class="container-fluid">

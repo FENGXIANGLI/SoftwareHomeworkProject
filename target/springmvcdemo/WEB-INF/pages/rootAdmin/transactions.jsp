@@ -105,7 +105,8 @@
           <td>${transaction.bookId}</td>
           <td>${transaction.shouldReturnTime}</td>
           <td>${transaction.borrowTimes}</td>
-          <td>${transaction.returnOrNot}</td>
+          <c:if test="${transaction.returnOrNot == 1}"><td>已归还</td></c:if>
+          <c:if test="${transaction.returnOrNot == 0||transaction.returnOrNot == null}"><td>未归还</td></c:if>
           <c:if test="${transaction.returnOrNot == 1}">
             <td>${transaction.returnTime}</td>
           </c:if>
@@ -114,6 +115,7 @@
           </c:if>
           <td>
             <a href="/admin/transactions/delete/${transaction.id}" type="button" class="btn btn-sm btn-danger">删除</a>
+            <a href="/admin/transactions/return/${transaction.id}" type="button" class="btn btn-sm btn-success">还书</a>
           </td>
         </tr>
       </c:forEach>

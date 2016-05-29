@@ -1,10 +1,13 @@
 package com.gaussic.model;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 /**
- * Created by fengxiangli on 16/5/27.
+ * Created by fengxiangli on 16/5/30.
  */
 @Entity
 @Table(name = "user", schema = "", catalog = "springdemo")
@@ -24,6 +27,7 @@ public class UserEntity {
     private Date birthday;
     private Integer defaultTimes;
     private Integer defaultTotalDay;
+    private String confirmPassword;
 
     @Id
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
@@ -36,6 +40,7 @@ public class UserEntity {
     }
 
     @Basic
+    @NotEmpty(message = "昵称不能为空")
     @Column(name = "nickname", nullable = true, insertable = true, updatable = true, length = 45)
     public String getNickname() {
         return nickname;
@@ -46,6 +51,8 @@ public class UserEntity {
     }
 
     @Basic
+    @NotEmpty(message = "密码不能为空")
+    @Length(min = 6,message = "密码位数不能少于6位")
     @Column(name = "password", nullable = true, insertable = true, updatable = true, length = 45)
     public String getPassword() {
         return password;
@@ -76,6 +83,8 @@ public class UserEntity {
     }
 
     @Basic
+    @Length(min=4, max = 15, message = "账户名字符数在4到15之间")
+    @NotEmpty(message = "账户名不能为空")
     @Column(name = "account", nullable = true, insertable = true, updatable = true, length = 45)
     public String getAccount() {
         return account;
@@ -175,6 +184,16 @@ public class UserEntity {
         this.defaultTotalDay = defaultTotalDay;
     }
 
+    @Basic
+    @Column(name = "confirmPassword", nullable = true, insertable = true, updatable = true, length = 45)
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -200,6 +219,8 @@ public class UserEntity {
         if (defaultTimes != null ? !defaultTimes.equals(that.defaultTimes) : that.defaultTimes != null) return false;
         if (defaultTotalDay != null ? !defaultTotalDay.equals(that.defaultTotalDay) : that.defaultTotalDay != null)
             return false;
+        if (confirmPassword != null ? !confirmPassword.equals(that.confirmPassword) : that.confirmPassword != null)
+            return false;
 
         return true;
     }
@@ -221,6 +242,7 @@ public class UserEntity {
         result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
         result = 31 * result + (defaultTimes != null ? defaultTimes.hashCode() : 0);
         result = 31 * result + (defaultTotalDay != null ? defaultTotalDay.hashCode() : 0);
+        result = 31 * result + (confirmPassword != null ? confirmPassword.hashCode() : 0);
         return result;
     }
 }

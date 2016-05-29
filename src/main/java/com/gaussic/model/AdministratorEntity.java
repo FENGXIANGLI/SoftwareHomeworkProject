@@ -3,7 +3,7 @@ package com.gaussic.model;
 import javax.persistence.*;
 
 /**
- * Created by fengxiangli on 16/5/27.
+ * Created by fengxiangli on 16/5/30.
  */
 @Entity
 @Table(name = "administrator", schema = "", catalog = "springdemo")

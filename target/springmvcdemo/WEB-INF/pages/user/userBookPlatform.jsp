@@ -172,7 +172,7 @@
 
             <div id="user-state-container" class="logoOrSign">
               <div style="" class="userPhoto">
-                <img alt="" src="http://static.show.wepiao.com/thumb/auto/80/107//pc/img/defaultpic.gif"></div>
+                <img alt="" src="/portraitImg/images/userPortrait.jpg"></div>
               <div class="userMsg">
                 <a href="javascript:void(0)">${userName}</a>
                 <span class="user_point"></span>
@@ -217,12 +217,13 @@
       </div>
 
       <c:if test="${empty bookList}">
-        <h2>暂无借书单</h2>
+        <h2>无图书</h2>
       </c:if>
 
       <c:if test="${!empty resultBorrow}">
-        <dt style="color: mediumaquamarine">${resultBorrow}</dt>
+        <dt style="color: red;font-size: large">${resultBorrow}</dt>
       </c:if>
+
 
       <div class="type_list clearfix">
         <div class="type_list_box">
@@ -231,8 +232,15 @@
         <c:forEach items="${bookList}" var="book">
 
           <dl class="clearfix">
-            <dt><img title="" alt="" width="100" height="" src="/portraitImg/images/${book.id}_book.jpg">
-            </dt>
+              
+              <c:if test="${book.isbn == 22222}">
+                  <dt><img title="" alt="" width="100" height="" src="http://img0.imgtn.bdimg.com/it/u=4215069573,2653080991&fm=21&gp=0.jpg">
+              </c:if>
+                      <c:if test="${book.isbn != 22222}">
+                  <dt><img title="" alt="" width="100" height="" src="/portraitImg/images/${book.id}_book.jpg">
+                  </dt>
+                  </c:if>
+
             <dd>
               <div class="ddleft fll">
                 <p class="mtit">
@@ -251,13 +259,7 @@
                                                                     </p> -->
               </div>
               <div class="ddright flr">
-                <c:if test="${book.atLibOrNot == 0}">
-                  <span class="pre_sale wp-icon-all">已借出</span>
-                </c:if>
-                <c:if test="${book.atLibOrNot == 1||empty book.atLibOrNot}">
-                  <span class="pre_sale wp-icon-all">可借阅</span>
-                </c:if>
-
+                  <span class="pre_sale wp-icon-all">库存剩余:${book.atLibOrNot}</span>
                 <p class="price"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;</p>
                 <a class="buy_btn" href="/user/borrow/${book.id}/${userId}/">借入</a>
               </div>

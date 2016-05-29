@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by fengxiangli on 16/5/27.
+ * Created by fengxiangli on 16/5/30.
  */
 @Entity
 @Table(name = "bookInfo", schema = "", catalog = "springdemo")
@@ -73,7 +73,7 @@ public class BookInfoEntity {
     }
 
     @Basic
-    @Column(name = "summary", nullable = true, insertable = true, updatable = true, length = 45)
+    @Column(name = "summary", nullable = true, insertable = true, updatable = true, length = 450)
     public String getSummary() {
         return summary;
     }

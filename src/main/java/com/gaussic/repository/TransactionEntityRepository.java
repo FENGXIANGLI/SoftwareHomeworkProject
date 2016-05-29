@@ -31,4 +31,9 @@ public interface TransactionEntityRepository extends JpaRepository<TransactionEn
     @Query("update TransactionEntity us set us.borrowTimes=:qBorrowTimes, us.shouldReturnTime=:qShouldReturnTime where us.id=:qId")
     public void updateBorrowTimesById(@Param("qBorrowTimes") Integer borrowTimes, @Param("qShouldReturnTime")Date shouldReturnTime, @Param("qId") Integer id);
 
+    @Modifying
+    @Transactional
+    @Query("update TransactionEntity us set us.returnOrNot=:qReturnOrNot where us.id=:qId")
+    public void updateReturnOrNotById(@Param("qReturnOrNot") Integer returnOrNot, @Param("qId") Integer id);
+
 }

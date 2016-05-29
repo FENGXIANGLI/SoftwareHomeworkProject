@@ -63,9 +63,8 @@
     </tr>
     <tr>
       <th>馆藏情况</th>
-      <c:if test = "${book.atLibOrNot == 1}"><td>在馆:${book.bookNumber}</td></c:if>
-      <c:if test="${book.atLibOrNot == 0}"><td>不在馆</td></c:if>
-      <c:if test="${empty book.atLibOrNot}"><td>不在馆</td></c:if>
+      <td>在馆:${book.atLibOrNot}本</td>
+
     </tr>
   </table>
 </div>

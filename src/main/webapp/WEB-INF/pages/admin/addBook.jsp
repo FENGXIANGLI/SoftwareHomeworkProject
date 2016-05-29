@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -30,11 +31,9 @@
 <div class="container">
   <h1>添加书籍</h1>
   <hr/>
-  <form:form action="/admin/books/addP" method="post" commandName="book" role="form">
-    <div class="form-group">
-      <label for="id">id号:</label>
-      <input type="text" class="form-control" id="id" name="id" placeholder="输入id号:"/>
-    </div>
+  <c:if test="${empty root}"><a href="/admin/users" type="button" class="btn btn-primary btn-sm">返回</a></h3></c:if>
+  <c:if test="${!empty root}"><a href="/admin/adminUsers/users" type="button" class="btn btn-primary btn-sm">返回</a></h3></c:if>
+  <form:form action="/admin/books/addP" method="post" commandName="book" role="form" enctype="multipart/form-data">
     <div class="form-group">
       <label for="bookName">书名:</label>
       <input type="text" class="form-control" id="bookName" name="bookName" placeholder="输入书名:"/>
@@ -64,27 +63,28 @@
       <input type="text" class="form-control" id="price" name="price" placeholder="输入价格:"/>
     </div>
     <div class="form-group">
-      <label for="atLibOrNot">是否在馆:</label>
-      <div class="radio">
-        <label class="radio-inline">
-          <input type="radio" name="userGender" id="atLibOrNot" value=0 checked>
-          不在馆                        </label>
-        <label class="radio-inline">
-          <input type="radio" name="userGender" id="atLibOrNot" value=1 >
-          在馆                        </label>
-    </div>
-    <div class="form-group">
       <label for="idBorrowed">借阅人学号:</label>
       <input type="text" class="form-control" id="idBorrowed" name="idBorrowed" placeholder="输入借阅人学号:"/>
+    </div>
+    <div class="form-group">
+      <label for="atLibOrNot">书籍数目:</label>
+      <input type="text" class="form-control" id="atLibOrNot" name="atLibOrNot" placeholder="输入添加的数目总数:"/>
     </div>
     <div class="form-group">
       <label for="bookNumber">书籍页数:</label>
       <input type="text" class="form-control" id="bookNumber" name="bookNumber" placeholder="输入书籍页数"/>
     </div>
     <div class="form-group">
+        <input id="avatar_input" name="picture" type="file" class="file" accept="image/*" />
+    </div>
+
+    <div class="form-group">
       <button type="submit" class="btn btn-sm btn-success">提交</button>
     </div>
+
   </form:form>
+
+
 </div>
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>

@@ -72,29 +72,29 @@
       <c:if test="${book.atLibOrNot == 1}">
         <div class="radio">
         <label class="radio-inline">
-          <input type="radio" name="userGender" id="atLibOrNot" value=0 >
+          <input type="radio" name="atLibOrNot" id="atLibOrNot" value=0 >
           不在馆                        </label>
         <label class="radio-inline">
-          <input type="radio" name="userGender" id="atLibOrNot" value=1 checked>
+          <input type="radio" name="atLibOrNot" id="atLibOrNot" value=1 checked>
           在馆                        </label>
       </div></c:if>
 
       <c:if test="${book.atLibOrNot == 0}">
         <div class="radio">
         <label class="radio-inline">
-          <input type="radio" name="userGender" id="atLibOrNot" value=0 checked>
+          <input type="radio" name="atLibOrNot" id="atLibOrNot" value=0 checked>
           不在馆                        </label>
         <label class="radio-inline">
-          <input type="radio" name="userGender" id="atLibOrNot" value=1 >
+          <input type="radio" name="atLibOrNot" id="atLibOrNot" value=1 >
           在馆                        </label>
       </div></c:if>
       <c:if test="${empty book.atLibOrNot}">
         <div class="radio">
           <label class="radio-inline">
-            <input type="radio" name="userGender" id="atLibOrNot" value=0 checked>
+            <input type="radio" name="atLibOrNot" id="atLibOrNot" value=0 checked>
             不在馆                        </label>
           <label class="radio-inline">
-            <input type="radio" name="userGender" id="atLibOrNot" value=1 >
+            <input type="radio" name="atLibOrNot" id="atLibOrNot" value=1 >
             在馆                        </label>
         </div></c:if>
 

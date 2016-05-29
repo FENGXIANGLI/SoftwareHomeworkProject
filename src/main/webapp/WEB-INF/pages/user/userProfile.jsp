@@ -153,7 +153,7 @@
 
                         <div id="user-state-container" class="logoOrSign">
                             <div style="" class="userPhoto">
-                                <img alt="" src="http://static.show.wepiao.com/thumb/auto/80/107//pc/img/defaultpic.gif"></div>
+                                <img alt="" src="/portraitImg/images/userPortrait.jpg"></div>
                             <div class="userMsg">
                                 <a href="javascript:void(0)">${userName}</a>
                                     <span class="user_point"></span>
