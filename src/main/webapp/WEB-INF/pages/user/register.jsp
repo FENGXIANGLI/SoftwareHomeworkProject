@@ -41,7 +41,7 @@
     </c:if>
 
     <c:if test="${!empty rightValue}">
-        <div class="alert alert-succeed" role="alert">
+        <div class="alert alert-success" role="alert">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <span class="sr-only">成功:</span>
         ${rightValue}
