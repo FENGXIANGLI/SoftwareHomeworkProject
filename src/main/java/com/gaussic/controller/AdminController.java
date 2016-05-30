@@ -442,11 +442,12 @@ public class AdminController {
         bookInfoEntityRepository.saveAndFlush(bookInfoEntity);
         bookInfoEntityList = bookInfoEntityRepository.findAll();
         modelMap.addAttribute("bookList",bookInfoEntityList);
-        if (request.getSession().getAttribute("rootAdminLogin") == null){
+        if (request.getSession().getAttribute("rootAdminLogin") != null){
             modelMap.addAttribute("root","yes");
-            return "/rootAdmin/users";
+            return "/rootAdmin/books";
 
         }
+        modelMap.addAttribute("bookList",bookInfoEntityList);
         return "/admin/books";
     }
 
@@ -508,7 +509,11 @@ public class AdminController {
 
         BookInfoEntity visitedBook = bookInfoEntityRepository.findOne(bookId);
 
-        bookInfoEntityRepository.updateAtLibOrNotById(visitedBook.getAtLibOrNot() + 1, 0,bookId);
+        bookInfoEntityRepository.updateAtLibOrNotById(visitedBook.getAtLibOrNot() + 1, visitedBook.getIdBorrowed(),bookId);
+
+        if (visitedBook.getAtLibOrNot()+ 1 == 3){
+            bookInfoEntityRepository.updateAtLibOrNotById(visitedBook.getAtLibOrNot() + 1, 0,bookId);
+        }
 
         UserEntity userEntity = userRepository.findByStudentId(studentId);
         userRepository.updateBorrowBookNumByStudentId(userEntity.getBorrowBookNum()-1,studentId);

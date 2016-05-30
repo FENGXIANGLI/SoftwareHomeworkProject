@@ -27,6 +27,9 @@
       <column name="idBorrowed" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="bookNumber" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="shouldreturnTime" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="bookFirst" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="bookSecond" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="bookThird" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
     <table name="transaction" schema="" catalog="springdemo" type="TABLE">

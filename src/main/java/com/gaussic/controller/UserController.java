@@ -408,9 +408,13 @@ class UserController {
             modelMap.addAttribute("bookList",bookInfoEntityList);
         }else if (type == Consts.AVAILABLEBOOKS){
             bookInfoEntityList = bookInfoEntityRepository.findByAtLibOrNot(Consts.ATLIB);
+            bookInfoEntityList.addAll(bookInfoEntityRepository.findByAtLibOrNot(2));
+            bookInfoEntityList.addAll(bookInfoEntityRepository.findByAtLibOrNot(3));
             modelMap.addAttribute("bookList",bookInfoEntityList);
         }else if (type == Consts.BORROWEDBOOKS){
             bookInfoEntityList = bookInfoEntityRepository.findByAtLibOrNot(Consts.NOTATLIB);
+            bookInfoEntityList.addAll(bookInfoEntityRepository.findByAtLibOrNot(1));
+            bookInfoEntityList.addAll(bookInfoEntityRepository.findByAtLibOrNot(2));
             modelMap.addAttribute("bookList",bookInfoEntityList);
         }
         return "/user/userBookPlatform";

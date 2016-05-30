@@ -68,36 +68,9 @@
              value="${book.price}"/>
     </div>
     <div class="form-group">
-      <label for="atLibOrNot">是否在馆:</label>
-      <c:if test="${book.atLibOrNot == 1}">
-        <div class="radio">
-        <label class="radio-inline">
-          <input type="radio" name="atLibOrNot" id="atLibOrNot" value=0 >
-          不在馆                        </label>
-        <label class="radio-inline">
-          <input type="radio" name="atLibOrNot" id="atLibOrNot" value=1 checked>
-          在馆                        </label>
-      </div></c:if>
-
-      <c:if test="${book.atLibOrNot == 0}">
-        <div class="radio">
-        <label class="radio-inline">
-          <input type="radio" name="atLibOrNot" id="atLibOrNot" value=0 checked>
-          不在馆                        </label>
-        <label class="radio-inline">
-          <input type="radio" name="atLibOrNot" id="atLibOrNot" value=1 >
-          在馆                        </label>
-      </div></c:if>
-      <c:if test="${empty book.atLibOrNot}">
-        <div class="radio">
-          <label class="radio-inline">
-            <input type="radio" name="atLibOrNot" id="atLibOrNot" value=0 checked>
-            不在馆                        </label>
-          <label class="radio-inline">
-            <input type="radio" name="atLibOrNot" id="atLibOrNot" value=1 >
-            在馆                        </label>
-        </div></c:if>
-
+      <label for="atLibOrNot">馆藏数目:</label>
+      <input type="text" class="form-control" id="atLibOrNot" name="atLibOrNot" placeholder="输入藏书数目:"
+             value="${book.atLibOrNot}"/>
     </div>
     <div class="form-group">
       <label for="idBorrowed">借书人的学号:</label>

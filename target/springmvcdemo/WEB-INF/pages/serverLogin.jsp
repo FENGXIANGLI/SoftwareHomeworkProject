@@ -32,10 +32,6 @@
         <br/>
         <h2><font color="red">${error}</font></h2>
     </c:if>
-    <c:if test="${not empty userName}">
-        <br/>
-        <h2><font color="red">${userName}</font></h2>
-    </c:if>
     <form:form action="/serverLogin" method="post" commandName="registerUser" role = "form">
         <div class="form-group">
             <input type="text" name="username" class="form-control" placeholder="用户名" >
