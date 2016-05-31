@@ -232,15 +232,8 @@
         <c:forEach items="${bookList}" var="book">
 
           <dl class="clearfix">
-              
-              <c:if test="${book.isbn == 22222}">
-                  <dt><img title="" alt="" width="100" height="" src="http://img0.imgtn.bdimg.com/it/u=4215069573,2653080991&fm=21&gp=0.jpg">
-              </c:if>
-                      <c:if test="${book.isbn != 22222}">
                   <dt><img title="" alt="" width="100" height="" src="/portraitImg/images/${book.id}_book.jpg">
                   </dt>
-                  </c:if>
-
             <dd>
               <div class="ddleft fll">
                 <p class="mtit">
